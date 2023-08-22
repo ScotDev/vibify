@@ -20,17 +20,20 @@ export default async function Navbar() {
         <Link href="/">
           <p className={Mono.className}>vibify</p>
         </Link>
-        <Link href="/login">
-          <Button title="Log in" />
-        </Link>
 
-        <Link href="/profile">
-          <Avatar
-            name={data?.session?.user.user_metadata?.name}
-            subtitle={data?.session?.user.user_metadata?.email}
-            image_URL={data?.session?.user.user_metadata?.avatar_url}
-          />
-        </Link>
+        {data.session ? (
+          <Link href="/profile">
+            <Avatar
+              name={data?.session?.user.user_metadata?.name}
+              subtitle={data?.session?.user.user_metadata?.email}
+              image_URL={data?.session?.user.user_metadata?.avatar_url}
+            />
+          </Link>
+        ) : (
+          <Link href="/login">
+            <Button title="Log in" />
+          </Link>
+        )}
       </nav>
     </>
   );

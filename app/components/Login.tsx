@@ -16,7 +16,7 @@ export default function Login() {
       provider: "spotify",
       options: {
         redirectTo: `${location.origin}/callback`,
-        scopes: "user-read-email",
+        scopes: "user-read-email user-read-private user-top-read",
       },
     });
     console.log("data: ", data, "error: ", error);

@@ -22,19 +22,33 @@ const Tag = ({ title }: { title: string }) => {
     </div>
   );
 };
-const SliderInput = () => {
+type SliderInputProps = {
+  title: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value: number;
+  min: number;
+  max: number;
+};
+const SliderInput: React.FC<SliderInputProps> = ({
+  title,
+  onChange,
+  value,
+  min,
+  max,
+}) => {
   return (
     <div className="flex flex-col gap-4 w-96 py-2">
-      <label htmlFor="slider">Tempo (bpm)</label>
+      <label htmlFor="slider">{title}</label>
       <input
         type="range"
         name="slider"
-        min="10"
-        max="180"
-        value="75"
+        min={min}
+        max={max}
+        value={value}
         className="accent-orange-600"
+        onChange={onChange}
       />
-      <p>140 (High)</p>
+      <p>{value} (High)</p>
     </div>
   );
 };

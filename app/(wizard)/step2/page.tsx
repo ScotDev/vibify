@@ -1,16 +1,37 @@
+"use client";
+
 import Button from "@/app/components/Button";
 import { TagInput, SliderInput, Tag } from "@/app/components/Input";
 import Link from "next/link";
+
+import { useState } from "react";
 
 export default function page({
   searchParams,
 }: {
   searchParams: { preseed: string };
 }) {
-  // export default function page({ params }: { params: string }) {
   const preseed = searchParams.preseed;
+
+  const [tempoValue, setTempoValue] = useState(85);
+  const handleTempoChange = async (e: any) => {
+    setTempoValue(e.target.value);
+  };
+  const [energyValue, setEnergyValue] = useState(20);
+  const handleEnergyChange = async (e: any) => {
+    setEnergyValue(e.target.value);
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    console.log(tempoValue);
+    console.log("submit");
+  };
   return (
-    <form className="flex flex-col gap-12 w-full justify-center ">
+    <form
+      className="flex flex-col gap-12 w-full justify-center"
+      onSubmit={handleSubmit}
+    >
       <div>
         <h1 className="text-3xl">Adjust the vibe</h1>
         <h2 className="text-xl capitalize py-6">
@@ -38,12 +59,24 @@ export default function page({
       <div className="pt-6">
         <h3 className="text-xl">Finer details</h3>
         <div className="pt-6">
-          <SliderInput />
-          <SliderInput />
+          <SliderInput
+            title="Tempo (bpm)"
+            onChange={(e) => handleTempoChange(e)}
+            value={tempoValue}
+            min={30}
+            max={200}
+          />
+          <SliderInput
+            title="Energy"
+            onChange={(e) => handleEnergyChange(e)}
+            value={energyValue}
+            min={0}
+            max={100}
+          />
         </div>
       </div>
       <Link href="/step3">
-        <Button title="Confirm" />
+        <Button title="Confirm" type="submit" />
       </Link>
     </form>
   );
