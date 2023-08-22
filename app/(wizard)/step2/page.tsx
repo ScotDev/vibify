@@ -1,11 +1,6 @@
 "use client";
 
-import Button from "@/app/components/Button";
 import ConfigurationForm from "@/app/components/ConfigurationForm";
-import { TagInput, SliderInput, Tag } from "@/app/components/Input";
-import Link from "next/link";
-
-import { useState } from "react";
 
 export default function page({
   searchParams,
