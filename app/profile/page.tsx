@@ -16,7 +16,7 @@ const getProfileData = async (access_token: string) => {
   };
 
   const res = await fetch("https://api.spotify.com/v1/me", options);
-  return res.json();
+  return await res.json();
 };
 
 const getTopTracks = async (access_token: string) => {
@@ -33,7 +33,7 @@ const getTopTracks = async (access_token: string) => {
     options
   );
 
-  return res.json();
+  return await res.json();
 };
 
 export default async function page() {
