@@ -79,7 +79,7 @@ export default async function page() {
       {/* TODO: Add next loading to track gallery here */}
       <div className="flex flex-wrap gap-16 mb-24">
         {userTopItems?.items?.map((item: any) => {
-          return <SmallMediaItem data={item} />;
+          return <SmallMediaItem key={item.name} data={item} />;
         })}
       </div>
       <SignOutButton />

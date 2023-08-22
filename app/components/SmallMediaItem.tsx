@@ -26,13 +26,17 @@ export default function SmallMediaItem({ data }: { data: any }) {
           {data.artists.map((artist: any, index: Number) => {
             if (index === data.artists.length - 1) {
               return (
-                <Link target="_blank" href={artist.external_urls.spotify}>
+                <Link
+                  target="_blank"
+                  key={artist.name}
+                  href={artist.external_urls.spotify}
+                >
                   {artist.name}
                 </Link>
               );
             } else {
               return (
-                <span>
+                <span key={artist.name}>
                   <Link target="_blank" href={artist.external_urls.spotify}>
                     {artist.name},&nbsp;
                   </Link>
