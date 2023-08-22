@@ -2,12 +2,7 @@
 
 import { Noto_Sans_KR } from "next/font/google";
 
-import {
-  GiRunningShoe,
-  GiPartyPopper,
-  GiBasketballBall,
-  GiHeadphones,
-} from "react-icons/gi";
+import { GiRunningShoe, GiPartyPopper, GiBasketballBall } from "react-icons/gi";
 
 import { BsHeadphones } from "react-icons/bs";
 import Link from "next/link";
