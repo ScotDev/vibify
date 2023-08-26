@@ -16,7 +16,7 @@ export default async function Navbar() {
   const { data } = await supabase.auth.getSession();
   return (
     <>
-      <nav className="flex justify-between px-24 py-6">
+      <nav className="flex justify-between px-4 md:px-12 lg:px-24 py-6">
         <Link href="/">
           <p className={Mono.className}>vibify</p>
         </Link>

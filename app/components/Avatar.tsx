@@ -15,7 +15,7 @@ export default function Avatar({ name, subtitle, image_URL }: AvatarProps) {
         height={36}
         className="rounded-full ring ring-neutral-600 h-[36px]"
       />
-      <div className="flex flex-col">
+      <div className="flex-col hidden md:flex">
         <p className="text-neutral-100">{name ?? "User"}</p>
         <p className="text-neutral-300 font-light">
           {subtitle ? subtitle : "Product designer"}
