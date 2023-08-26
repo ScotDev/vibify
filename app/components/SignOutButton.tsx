@@ -11,6 +11,7 @@ export default function Button() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     // router.refresh();
+    console.log("signed out");
     router.push(location.origin);
   };
   return (
