@@ -10,6 +10,7 @@ const nextConfig = {
         // pathname: "/account123/**",
       },
       { protocol: "https", hostname: "i.scdn.co" },
+      { protocol: "https", hostname: "scontent-ams2-1.xx.fbcdn.net" },
     ],
   },
 };

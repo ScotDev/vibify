@@ -6,6 +6,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 import type { Database } from "@/supabase";
+import Login from "../components/Login";
 
 const getProfileData = async (access_token: string) => {
   const options = {
@@ -49,28 +50,36 @@ export default async function page() {
   );
   // console.log(userTopItems);
 
+  if (!data.session) {
+    return (
+      <div className="flex flex-col pt-12 gap-6">
+        <Login />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col pt-12 gap-6">
       <h1>Profile</h1>
-      <div className="flex flex-col pt-6 gap-2 w-96 py-2">
+      <div className="flex flex-col pt-6 gap-2 max-w-96 py-2">
         <p className="text-xs">Display name</p>
         <h3>{data?.session?.user.user_metadata?.name}</h3>
       </div>
-      <div className="flex flex-col gap-2 w-96 py-2">
+      <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Email address</p>
         <h4>{data?.session?.user.user_metadata?.email}</h4>
       </div>
 
-      <div className="flex flex-col gap-2 w-96 py-2">
+      <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Profile URL</p>
         <Code>{userData?.external_urls?.spotify}</Code>
       </div>
-      <div className="flex flex-col gap-2 w-96 py-2">
+      <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Subscription type</p>
         <p className="capitalize">{userData?.product}</p>
       </div>
 
-      <div className="flex flex-col gap-2 w-96 py-2">
+      <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">User country</p>
         <p className="capitalize">{userData?.country}</p>
       </div>
