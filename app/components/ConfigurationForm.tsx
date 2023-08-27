@@ -2,23 +2,47 @@
 import { useState } from "react";
 import Button from "@/app/components/Button";
 import { TagInput, SliderInput, Tag } from "@/app/components/Input";
-import Link from "next/link";
+
+import { useRouter } from "next/navigation";
 
 export default function ConfigurationForm({ seed }: { seed: string }) {
+  const router = useRouter();
+
+  const [selectedTracks, setSelectedTracks] = useState([] as string[]);
+  const [selectedGenres, setSelectedGenres] = useState([] as string[]);
   const [tempoValue, setTempoValue] = useState(85);
-  const handleTempoChange = async (e: any) => {
+  const [energyValue, setEnergyValue] = useState(20);
+
+  const handleTempoChange = (e: any) => {
     setTempoValue(e.target.value);
   };
-  const [energyValue, setEnergyValue] = useState(20);
-  const handleEnergyChange = async (e: any) => {
+
+  const handleEnergyChange = (e: any) => {
     setEnergyValue(e.target.value);
   };
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    console.log(tempoValue);
-    console.log("submit");
+  const handleTrackSelect = (value: string) => {
+    setSelectedTracks([...selectedTracks, value]);
   };
+
+  const handleGenreSelect = (value: string) => {
+    setSelectedGenres([...selectedGenres, value]);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("submit");
+
+    router.push(
+      `/step3?seed=${seed}&tracks=${selectedTracks.join(
+        ","
+      )}&genres=${selectedGenres.join(
+        ","
+      )}&energy=${energyValue}&tempo=${tempoValue}
+      `
+    );
+  };
+
   return (
     <form
       className="flex flex-col gap-12 w-full justify-center"
@@ -26,31 +50,25 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
     >
       <div>
         <h1 className="text-3xl">Adjust the vibe</h1>
-        <h2 className="text-xl capitalize py-6">
-          Chosen vibe is <span className="font-bold">{seed}</span>
+        <h2 className="text-xl  py-6">
+          The chosen vibe is{" "}
+          <span className="font-bold capitalize">{seed}</span>
         </h2>
 
-        <div className="flex gap-12">
+        <div className="flex flex-wrap gap-12">
           <div className="pt-6">
-            <TagInput title="tracks" />
-            <div className="flex flex-wrap gap-2 pt-2">
-              <Tag title="Coco Chanel" />
-              <Tag title="CUFF IT" />
-            </div>
+            <TagInput title="tracks" onSelect={handleTrackSelect} />
+            <div className="flex flex-wrap gap-2 pt-2"></div>
           </div>
           <div className="pt-6">
-            <TagInput title="genres" />
-            <div className="flex flex-wrap gap-2 pt-2">
-              <Tag title="Coco Chanel" />
-              <Tag title="CUFF IT" />
-            </div>
+            <TagInput title="genres" onSelect={handleGenreSelect} />
           </div>
         </div>
       </div>
 
-      <div className="pt-6">
+      <div className="pt-6 ">
         <h3 className="text-xl">Finer details</h3>
-        <div className="pt-6">
+        <div className="pt-6 flex flex-wrap gap-12">
           <SliderInput
             title="Tempo (bpm)"
             onChange={(e) => handleTempoChange(e)}
@@ -67,9 +85,9 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
           />
         </div>
       </div>
-      <Link href="/step3">
-        <Button title="Confirm" type="submit" />
-      </Link>
+      {/* <Link href="/step3"> */}
+      <Button title="Confirm" type="submit" />
+      {/* </Link> */}
     </form>
   );
 }

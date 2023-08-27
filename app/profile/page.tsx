@@ -50,6 +50,7 @@ export default async function page() {
   );
   // console.log(userTopItems);
 
+  // TODO: Replace with protected route
   if (!data.session) {
     return (
       <div className="flex flex-col pt-12 gap-6">

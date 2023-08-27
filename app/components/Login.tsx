@@ -25,7 +25,7 @@ export default function Login() {
 
   return (
     <div>
-      <Button title="Log in with Spotify" onClick={() => handleSignIn()} />
+      <Button title="Log in with" hasImage onClick={() => handleSignIn()} />
     </div>
   );
 }

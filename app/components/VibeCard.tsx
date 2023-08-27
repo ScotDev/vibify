@@ -57,7 +57,7 @@ const icon = (title: string) => {
 
 export default function VibeCard({ title }: { title: string }) {
   return (
-    <Link href={`/step2/?preseed=${title}`}>
+    <Link href={`/step2/?seed=${title}`}>
       <div
         className="rounded-xl bg-neutral-400 w-[250px] aspect-square p-6 grid cursor-pointer  transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
         onClick={() => console.log(title)}
