@@ -3,19 +3,17 @@ import { useState } from "react";
 const TagInput = ({
   title,
   onSelect,
+  placeholder,
 }: {
   title: string;
   onSelect: (value: string) => void;
+  placeholder: string;
 }) => {
   const [selectedVals, setSelectedVals] = useState([] as string[]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // if (e.currentTarget.value === " ") {
-    //   return console.log("Empty value");
-    // }
     if (e.key === "Enter") {
       e.preventDefault();
-
       const value = e.currentTarget.value.trim();
       if (value !== "") {
         setSelectedVals([...selectedVals, value]);
@@ -26,17 +24,18 @@ const TagInput = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-96 py-2">
+    <div className="flex flex-col gap-4 w-full py-2">
       <label htmlFor="textInput" className="capitalize">
         {title}
       </label>
-
       <input
-        className="rounded-md px-4 py-2 bg-neutral-300 text-neutral-900 h-full w-96"
+        className="rounded-md px-4 py-2 bg-neutral-700 text-neutral-300 h-full overflow-hidden"
         type="text"
         name="textInput"
-        placeholder="Coco Chanel, CUFF IT, Crazy In Love"
+        placeholder={placeholder}
         onKeyDown={(e) => handleKeyDown(e)}
+        inputMode="text"
+        autoComplete="off"
       />
 
       <div className="flex flex-wrap gap-2 pt-2">
@@ -79,7 +78,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
         min={min}
         max={max}
         value={value}
-        className="accent-orange-600"
+        className="accent-orange-600 w-full"
         onChange={onChange}
       />
       <p>{value} (High)</p>

@@ -2,18 +2,11 @@ import Link from "next/link";
 import Avatar from "./Avatar";
 import Button from "./Button";
 
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-
-import type { Database } from "@/supabase";
-
 import { DM_Mono } from "next/font/google";
 
 const Mono = DM_Mono({ subsets: ["latin"], weight: ["400"] });
 
-export default async function Navbar() {
-  const supabase = createServerComponentClient<Database>({ cookies });
-  const { data } = await supabase.auth.getSession();
+export default async function Navbar({ data }: { data: any }) {
   return (
     <>
       <nav className="flex justify-between px-4 md:px-12 lg:px-24 py-6">

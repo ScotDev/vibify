@@ -55,20 +55,28 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
           <span className="font-bold capitalize">{seed}</span>
         </h2>
 
-        <div className="flex flex-wrap gap-12">
-          <div className="pt-6">
-            <TagInput title="tracks" onSelect={handleTrackSelect} />
+        <div className="flex flex-wrap gap-12 ">
+          <div className="pt-6 w-96">
+            <TagInput
+              title="tracks"
+              onSelect={handleTrackSelect}
+              placeholder="Coco Chanel, CUFF IT, Crazy In Love"
+            />
             <div className="flex flex-wrap gap-2 pt-2"></div>
           </div>
-          <div className="pt-6">
-            <TagInput title="genres" onSelect={handleGenreSelect} />
+          <div className="pt-6 w-96">
+            <TagInput
+              title="genres"
+              onSelect={handleGenreSelect}
+              placeholder="House, Techno, Country"
+            />
           </div>
         </div>
       </div>
 
       <div className="pt-6 ">
         <h3 className="text-xl">Finer details</h3>
-        <div className="pt-6 flex flex-wrap gap-12">
+        <div className="pt-6 flex flex-wrap gap-12 ">
           <SliderInput
             title="Tempo (bpm)"
             onChange={(e) => handleTempoChange(e)}
