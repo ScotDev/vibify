@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const TagInput = ({
   title,
@@ -69,6 +69,16 @@ const SliderInput: React.FC<SliderInputProps> = ({
   min,
   max,
 }) => {
+  // const [grade, setGrade] = useState("Average");
+
+  const grade =
+    value < max / 3
+      ? "Low"
+      : value < max / 2
+      ? "Normal"
+      : value < max - max / 3
+      ? "High"
+      : "Very High";
   return (
     <div className="flex flex-col gap-4 w-96 py-2">
       <label htmlFor="slider">{title}</label>
@@ -81,13 +91,48 @@ const SliderInput: React.FC<SliderInputProps> = ({
         className="accent-orange-600 w-full"
         onChange={onChange}
       />
-      <p>{value} (High)</p>
+      <p>
+        {value} ({grade})
+      </p>
     </div>
   );
 };
 
-// export default function Input() {
-//   return <div>Input</div>;
-// }
+const SearchInput = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+
+    // if (!e.nativeEvent.data) {
+    //   setResults([]);
+    //   console.log("cleared");
+    //   setIsLoading(false);
+    // }
+  };
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      // Call the API or perform other expensive operations here
+
+      // const res = await searchLocation(searchTerm);
+      // if (res.length < 1)
+      //   return setResults([
+      //     {
+      //       name: "No results found",
+      //       region: "",
+      //       country: "",
+      //       lat: "",
+      //       lon: "",
+      //     },
+      //   ]);
+      // console.log(res);
+      // setResults(res);
+      console.log("Search term:", searchTerm);
+      // setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
+};
 
 export { TagInput, SliderInput, Tag };

@@ -18,6 +18,7 @@ export default async function page({
     genres: string;
     energy: Number;
     tempo: Number;
+    totaltracks: Number;
   };
 }) {
   const supabase = createServerComponentClient<Database>({ cookies });
@@ -27,7 +28,22 @@ export default async function page({
     tracks: string = searchParams.tracks,
     genres: string = searchParams.genres,
     energy: any = searchParams.energy,
-    tempo: any = searchParams.tempo;
+    tempo: any = searchParams.tempo,
+    totalTracks: any = searchParams.totaltracks;
+
+  const getSeedIDs = async (access_token: string) => {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const res = await fetch(
+      `https://api.spotify.com/v1/tracks?market=GB&ids=`,
+      options
+    );
+    return await res.json();
+  };
 
   const getRecommendations = async (access_token: string) => {
     const options = {
@@ -36,9 +52,8 @@ export default async function page({
         "Content-Type": "application/json",
       },
     };
-
     const res = await fetch(
-      `https://api.spotify.com/v1/recommendations?limit=10&market=GB&seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA&target_tempo=${tempo}&target_energy=${
+      `https://api.spotify.com/v1/recommendations?limit=${totalTracks}&market=GB&seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA&target_tempo=${tempo}&target_energy=${
         energy / 100
       }`,
       options
@@ -53,7 +68,6 @@ export default async function page({
         "Content-Type": "application/json",
       },
     };
-
     const res = await fetch(
       `https://api.spotify.com/v1/audio-features?ids=${trackIDs.join(",")}`,
       options
@@ -89,7 +103,7 @@ export default async function page({
   );
 
   // console.log(Math.round(averageEnergy * 10));
-  // console.log(recommendations);
+  console.log(recommendations);
 
   return (
     // <div className="lg:pr-48">

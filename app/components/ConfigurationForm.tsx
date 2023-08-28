@@ -12,6 +12,7 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
   const [selectedGenres, setSelectedGenres] = useState([] as string[]);
   const [tempoValue, setTempoValue] = useState(85);
   const [energyValue, setEnergyValue] = useState(20);
+  const [totalTracksValue, setTotalTracksValue] = useState(10);
 
   const handleTempoChange = (e: any) => {
     setTempoValue(e.target.value);
@@ -19,6 +20,9 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
 
   const handleEnergyChange = (e: any) => {
     setEnergyValue(e.target.value);
+  };
+  const handleTotalTracksChange = (e: any) => {
+    setTotalTracksValue(e.target.value);
   };
 
   const handleTrackSelect = (value: string) => {
@@ -38,7 +42,7 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
         ","
       )}&genres=${selectedGenres.join(
         ","
-      )}&energy=${energyValue}&tempo=${tempoValue}
+      )}&energy=${energyValue}&tempo=${tempoValue}&totaltracks=${totalTracksValue}
       `
     );
   };
@@ -83,6 +87,13 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
             value={tempoValue}
             min={30}
             max={200}
+          />
+          <SliderInput
+            title="Number of tracks"
+            onChange={(e) => handleTotalTracksChange(e)}
+            value={totalTracksValue}
+            min={5}
+            max={100}
           />
           <SliderInput
             title="Energy"
