@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Button from "@/app/components/Button";
-import { TagInput, SliderInput, Tag } from "@/app/components/Input";
+import { TagInput, SliderInput, SearchInput } from "@/app/components/Input";
 
 import { useRouter } from "next/navigation";
 
@@ -11,16 +11,20 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
   const [selectedTracks, setSelectedTracks] = useState([] as string[]);
   const [selectedGenres, setSelectedGenres] = useState([] as string[]);
   const [tempoValue, setTempoValue] = useState(85);
-  const [energyValue, setEnergyValue] = useState(20);
+  // const [energyValue, setEnergyValue] = useState(20);
+  const [popularityValue, setPopularityValue] = useState(90);
   const [totalTracksValue, setTotalTracksValue] = useState(10);
 
   const handleTempoChange = (e: any) => {
     setTempoValue(e.target.value);
   };
 
-  const handleEnergyChange = (e: any) => {
-    setEnergyValue(e.target.value);
+  const handlePopularityChange = (e: any) => {
+    setPopularityValue(e.target.value);
   };
+  // const handleEnergyChange = (e: any) => {
+  //   setEnergyValue(e.target.value);
+  // };
   const handleTotalTracksChange = (e: any) => {
     setTotalTracksValue(e.target.value);
   };
@@ -30,6 +34,7 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
   };
 
   const handleGenreSelect = (value: string) => {
+    console.log(value);
     setSelectedGenres([...selectedGenres, value]);
   };
 
@@ -42,10 +47,11 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
         ","
       )}&genres=${selectedGenres.join(
         ","
-      )}&energy=${energyValue}&tempo=${tempoValue}&totaltracks=${totalTracksValue}
+      )}&tempo=${tempoValue}&popularity=${popularityValue}&totaltracks=${totalTracksValue}
       `
     );
   };
+  // &energy=${energyValue}
 
   return (
     <form
@@ -75,6 +81,13 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
               placeholder="House, Techno, Country"
             />
           </div>
+          <div className="pt-6 w-96">
+            <SearchInput
+              title="Seed genres"
+              handleResultSelect={handleGenreSelect}
+              endpoint="/api/test"
+            />
+          </div>
         </div>
       </div>
 
@@ -95,10 +108,17 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
             min={5}
             max={100}
           />
-          <SliderInput
+          {/* <SliderInput
             title="Energy"
             onChange={(e) => handleEnergyChange(e)}
             value={energyValue}
+            min={0}
+            max={100}
+          /> */}
+          <SliderInput
+            title="Popularity"
+            onChange={(e) => handlePopularityChange(e)}
+            value={popularityValue}
             min={0}
             max={100}
           />

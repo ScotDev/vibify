@@ -98,9 +98,20 @@ const SliderInput: React.FC<SliderInputProps> = ({
   );
 };
 
-const SearchInput = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState([]);
+const SearchInput = ({
+  title,
+  endpoint,
+  // term,
+  handleResultSelect,
+}: {
+  title: string;
+  endpoint: string;
+  // term: string;
+  handleResultSelect: (value: string) => void;
+}) => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [results, setResults] = useState<string[]>([]);
+  const [selectedVals, setSelectedVals] = useState<string[]>([]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
 
@@ -114,25 +125,58 @@ const SearchInput = () => {
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
       // Call the API or perform other expensive operations here
-
-      // const res = await searchLocation(searchTerm);
-      // if (res.length < 1)
-      //   return setResults([
-      //     {
-      //       name: "No results found",
-      //       region: "",
-      //       country: "",
-      //       lat: "",
-      //       lon: "",
-      //     },
-      //   ]);
-      // console.log(res);
-      // setResults(res);
+      if (searchTerm.length < 1) return setResults([]);
+      const res = await fetch(`${endpoint}?term=${searchTerm}`);
+      const formattedRes = await res.json();
+      if (formattedRes.result.length < 1)
+        return setResults(["No results found"]);
+      console.log("res", formattedRes.result[0]);
+      setResults(formattedRes.result);
       console.log("Search term:", searchTerm);
       // setIsLoading(false);
     }, 1000);
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
+  }, [endpoint, searchTerm]);
+
+  const handleSelect = (value: string) => {
+    handleResultSelect(value);
+    setSelectedVals([...selectedVals, value]);
+  };
+
+  return (
+    <div className="flex flex-col gap-4 w-full py-2">
+      <label htmlFor="textInput" className="capitalize">
+        {title}
+      </label>
+      <input
+        className="rounded-md px-4 py-2 bg-neutral-700 text-neutral-300 h-full overflow-hidden"
+        type="text"
+        name="textInput"
+        // placeholder={placeholder}
+        // onKeyDown={(e) => handleKeyDown(e)}
+        onChange={handleInputChange}
+        inputMode="text"
+        autoComplete="off"
+      />
+      <div className="flex flex-wrap gap-2 pt-2">
+        {selectedVals.length > 0 &&
+          selectedVals.map((val) => <Tag key={val} title={val} />)}
+      </div>
+      <ul className="flex flex-col gap-2 z-20 ">
+        {results.length > 0 &&
+          results.map((result) => (
+            // <Tag key={result} title={result} />
+            <li
+              key={result}
+              onClick={() => handleSelect(result)}
+              className="flex cursor-pointer bg-neutral-500 w-full rounded-md px-4 py-2 hover:bg-neutral-700"
+            >
+              <p className="capitalize">{result}</p>
+            </li>
+          ))}
+      </ul>
+    </div>
+  );
 };
 
-export { TagInput, SliderInput, Tag };
+export { TagInput, SliderInput, Tag, SearchInput };

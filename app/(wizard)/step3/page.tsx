@@ -18,6 +18,7 @@ export default async function page({
     genres: string;
     energy: Number;
     tempo: Number;
+    popularity: Number;
     totaltracks: Number;
   };
 }) {
@@ -29,6 +30,7 @@ export default async function page({
     genres: string = searchParams.genres,
     energy: any = searchParams.energy,
     tempo: any = searchParams.tempo,
+    popularity: any = searchParams.popularity,
     totalTracks: any = searchParams.totaltracks;
 
   const getSeedIDs = async (access_token: string) => {
@@ -52,16 +54,27 @@ export default async function page({
         "Content-Type": "application/json",
       },
     };
+    const genresParam = genres.length > 0 ? `&seed_genres=${genres}` : "";
+    console.log(
+      `https://api.spotify.com/v1/recommendations?limit=${totalTracks}${genresParam}&target_tempo=${tempo}&target_popularity=${popularity}`
+    );
+
     const res = await fetch(
-      `https://api.spotify.com/v1/recommendations?limit=${totalTracks}&market=GB&seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA&target_tempo=${tempo}&target_energy=${
-        energy / 100
-      }`,
+      `https://api.spotify.com/v1/recommendations?limit=${totalTracks}${genresParam}&target_tempo=${tempo}&target_popularity=${popularity}`,
+      // &seed_tracks=${tracks}
+      // `https://api.spotify.com/v1/recommendations?limit=${totalTracks}&market=GB&seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA&target_tempo=${tempo}&target_energy=${
+
       options
     );
+    if (!res.ok) {
+      console.log("Error:", res);
+      // return [];
+    }
     return await res.json();
   };
 
   const getAudioFeatures = async (access_token: string, trackIDs: string[]) => {
+    // if (trackIDs) return Promise.resolve({ audio_features: [] });
     const options = {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -80,7 +93,7 @@ export default async function page({
   );
   const audioFeatures = await getAudioFeatures(
     data.session?.provider_token as string,
-    recommendations.tracks.map((track: any) => track.id)
+    recommendations.tracks?.map((track: any) => track.id)
   );
   const totalDuration = recommendations.tracks.reduce(
     (a: any, b: any) => a + b.duration_ms,
@@ -88,22 +101,19 @@ export default async function page({
   );
 
   const totalTempo = audioFeatures.audio_features.reduce(
-    (a: any, b: any) => a + b.tempo,
+    (a: any, b: any) => a + b?.tempo,
     0
   );
   const averageTempo = Math.round(
     totalTempo / audioFeatures.audio_features.length
   );
   const totalEnergy = audioFeatures.audio_features.reduce(
-    (a: any, b: any) => a + b.energy,
+    (a: any, b: any) => a + b?.energy,
     0
   );
   const averageEnergy = Math.round(
     (totalEnergy / audioFeatures.audio_features.length) * 100
   );
-
-  // console.log(Math.round(averageEnergy * 10));
-  console.log(recommendations);
 
   return (
     // <div className="lg:pr-48">
@@ -112,11 +122,11 @@ export default async function page({
       <div className="flex gap-12 py-6">
         <div className="flex flex-col gap-2">
           <p className="text-sm">Average bpm</p>
-          <p className="">{averageTempo}</p>
+          <p className="">{averageTempo || 0}</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-sm">Average energy</p>
-          <p className="">{averageEnergy}%</p>
+          <p className="">{averageEnergy || 0}%</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-sm">Total duration</p>
@@ -130,10 +140,13 @@ export default async function page({
       </div>
       <Button title="Save playlist" />
       <div className="flex flex-col gap-8 py-12 ">
-        {recommendations &&
+        {recommendations ? (
           recommendations.tracks.map((track: any) => {
             return <MediaItem key={track.id} data={track} />;
-          })}
+          })
+        ) : (
+          <p>No tracks found</p>
+        )}
       </div>
     </div>
   );
