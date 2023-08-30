@@ -74,16 +74,10 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
             />
             <div className="flex flex-wrap gap-2 pt-2"></div>
           </div>
-          <div className="pt-6 w-96">
-            <TagInput
-              title="genres"
-              onSelect={handleGenreSelect}
-              placeholder="House, Techno, Country"
-            />
-          </div>
-          <div className="pt-6 w-96">
+          <div className="pt-6 w-96 relative">
             <SearchInput
               title="Seed genres"
+              placeholder="House, Techno, Country"
               handleResultSelect={handleGenreSelect}
               endpoint="/api/test"
             />

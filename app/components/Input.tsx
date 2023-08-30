@@ -29,7 +29,6 @@ const TagInput = ({
         {title}
       </label>
       <input
-        className="rounded-md px-4 py-2 bg-neutral-700 text-neutral-300 h-full overflow-hidden"
         type="text"
         name="textInput"
         placeholder={placeholder}
@@ -48,8 +47,8 @@ const TagInput = ({
 
 const Tag = ({ title }: { title: string }) => {
   return (
-    <div className="w-fit h-fit px-6 py-2 text-sm rounded-full grid place-items-center bg-neutral-200">
-      <p className="text-neutral-900 font-medium capitalize">{title}</p>
+    <div className="w-fit h-fit px-4 py-2 text-sm rounded-full grid place-items-center bg-black">
+      <p className="font-medium capitalize">{title}</p>
     </div>
   );
 };
@@ -101,25 +100,37 @@ const SliderInput: React.FC<SliderInputProps> = ({
 const SearchInput = ({
   title,
   endpoint,
-  // term,
+  placeholder,
   handleResultSelect,
 }: {
   title: string;
   endpoint: string;
-  // term: string;
+  placeholder: string;
   handleResultSelect: (value: string) => void;
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [results, setResults] = useState<string[]>([]);
   const [selectedVals, setSelectedVals] = useState<string[]>([]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    setSearchTerm(e.target.value.trim());
 
     // if (!e.nativeEvent.data) {
     //   setResults([]);
     //   console.log("cleared");
     //   setIsLoading(false);
     // }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      // const value = e.currentTarget.value.trim();
+      // if (value !== "") {
+      //   // setSelectedVals([...selectedVals, value]);
+      //   // onSelect(value);
+      //   e.currentTarget.value = "";
+      // }
+    }
   };
 
   useEffect(() => {
@@ -141,40 +152,44 @@ const SearchInput = ({
   const handleSelect = (value: string) => {
     handleResultSelect(value);
     setSelectedVals([...selectedVals, value]);
+    setResults([]);
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full py-2">
+    <div className="flex flex-col w-full py-2">
       <label htmlFor="textInput" className="capitalize">
         {title}
       </label>
       <input
-        className="rounded-md px-4 py-2 bg-neutral-700 text-neutral-300 h-full overflow-hidden"
+        className="mt-4"
         type="text"
         name="textInput"
-        // placeholder={placeholder}
-        // onKeyDown={(e) => handleKeyDown(e)}
+        placeholder={placeholder}
+        onKeyDown={(e) => handleKeyDown(e)}
         onChange={handleInputChange}
         inputMode="text"
         autoComplete="off"
       />
-      <div className="flex flex-wrap gap-2 pt-2">
+      {results.length > 0 && (
+        <ul className="flex flex-col z-20 overflow-y-scroll bg-black border-solid border-t-0 border-2 border-neutral-700 static w-full">
+          <h5 className="text-xl px-4 py-4">Results</h5>
+          {results.length > 0 &&
+            results.map((result) => (
+              // <Tag key={result} title={result} />
+              <li
+                key={result}
+                onClick={() => handleSelect(result)}
+                className="flex cursor-pointer bg-black w-full px-4 py-2 hover:bg-neutral-600"
+              >
+                <p className="capitalize text-sm">{result}</p>
+              </li>
+            ))}
+        </ul>
+      )}
+      <div className="flex flex-wrap gap-2 py-4 absolute top-28">
         {selectedVals.length > 0 &&
           selectedVals.map((val) => <Tag key={val} title={val} />)}
       </div>
-      <ul className="flex flex-col gap-2 z-20 ">
-        {results.length > 0 &&
-          results.map((result) => (
-            // <Tag key={result} title={result} />
-            <li
-              key={result}
-              onClick={() => handleSelect(result)}
-              className="flex cursor-pointer bg-neutral-500 w-full rounded-md px-4 py-2 hover:bg-neutral-700"
-            >
-              <p className="capitalize">{result}</p>
-            </li>
-          ))}
-      </ul>
     </div>
   );
 };

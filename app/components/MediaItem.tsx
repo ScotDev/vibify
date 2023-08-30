@@ -18,7 +18,7 @@ import { msToMinSec, formatDate } from "@/app/utils/calc";
 
 export default function MediaItem({ data }: { data: any }) {
   return (
-    <div className="flex justify-between ">
+    <div className="flex justify-between media-item">
       <div className="flex gap-6 w-full md:w-1/2 truncate">
         <Link target="_blank" href={data.external_urls.spotify}>
           <div className="h-[100px] w-[100px]">

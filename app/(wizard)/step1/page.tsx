@@ -1,6 +1,19 @@
+import { redirect } from "next/navigation";
+
 import VibeCard from "@/app/components/VibeCard";
 
-export default function page() {
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+
+import type { Database } from "@/supabase";
+
+export default async function page() {
+  const supabase = createServerComponentClient<Database>({ cookies });
+  const { data } = await supabase.auth.getSession();
+
+  if (!data.session?.user) {
+    return redirect("/login");
+  }
   return (
     <div>
       <h1>Choose a vibe</h1>

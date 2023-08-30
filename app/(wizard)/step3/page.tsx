@@ -2,6 +2,7 @@
 
 import Button from "@/app/components/Button";
 import MediaItem from "@/app/components/MediaItem";
+import Dialog from "@/app/components/Dialog";
 
 import { msToMinSec } from "@/app/utils/calc";
 
@@ -139,6 +140,7 @@ export default async function page({
         <p>{energy.toString()}</p> */}
       </div>
       <Button title="Save playlist" />
+      {/* <Dialog /> */}
       <div className="flex flex-col gap-8 py-12 ">
         {recommendations ? (
           recommendations.tracks.map((track: any) => {

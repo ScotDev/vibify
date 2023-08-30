@@ -27,14 +27,26 @@
 } */
 
 body {
-  background: #1d1d1d;
-  @apply text-neutral-200;
+  /* background: #171717; */
+  @apply text-neutral-200 bg-neutral-800;
 }
 
 h1 {
   @apply text-2xl font-medium;
 }
 
-a {
+div.media-item a {
   @apply hover:underline;
+}
+.card svg,
+h3 {
+  @apply fill-neutral-200 text-neutral-200;
+}
+
+.card:hover {
+  box-shadow: -8px 8px 0 white;
+}
+
+input[type="text"] {
+  @apply px-4 py-2 bg-black text-neutral-300 h-full overflow-hidden border-solid border-2 border-neutral-700;
 }
