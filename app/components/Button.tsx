@@ -13,12 +13,8 @@ export default function Button({
   hasImage?: boolean;
 }) {
   return (
-    <button
-      className="bg-neutral-200 w-fit py-2 px-4 rounded-md cursor-pointer flex gap-2 items-center"
-      onClick={onClick}
-      type={type ?? "button"}
-    >
-      <p className="font-bold text-center text-neutral-950">{title}</p>
+    <button className="btn" onClick={onClick} type={type ?? "button"}>
+      <p className="font-medium text-center ">{title}</p>
       {hasImage && (
         <Image src={spotify_logo} width={64} height={64} alt="Button icon" />
       )}

@@ -75,17 +75,22 @@ export default async function page({
   };
 
   const getAudioFeatures = async (access_token: string, trackIDs: string[]) => {
-    // if (trackIDs) return Promise.resolve({ audio_features: [] });
     const options = {
       headers: {
         Authorization: `Bearer ${access_token}`,
         "Content-Type": "application/json",
       },
     };
+    if (!trackIDs) return Promise.resolve({ audio_features: [] });
+
     const res = await fetch(
       `https://api.spotify.com/v1/audio-features?ids=${trackIDs.join(",")}`,
       options
     );
+
+    if (!res.ok) {
+      console.log("Error:", res);
+    }
     return await res.json();
   };
 
@@ -94,9 +99,9 @@ export default async function page({
   );
   const audioFeatures = await getAudioFeatures(
     data.session?.provider_token as string,
-    recommendations.tracks?.map((track: any) => track.id)
+    recommendations?.tracks?.map((track: any) => track.id)
   );
-  const totalDuration = recommendations.tracks.reduce(
+  const totalDuration = recommendations?.tracks?.reduce(
     (a: any, b: any) => a + b.duration_ms,
     0
   );
@@ -143,7 +148,7 @@ export default async function page({
       {/* <Dialog /> */}
       <div className="flex flex-col gap-8 py-12 ">
         {recommendations ? (
-          recommendations.tracks.map((track: any) => {
+          recommendations.tracks?.map((track: any) => {
             return <MediaItem key={track.id} data={track} />;
           })
         ) : (

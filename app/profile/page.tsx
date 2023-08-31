@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 
 import type { Database } from "@/supabase";
 import Login from "../components/Login";
+import ClipboardButton from "../components/ClipboardButton";
 
 const getProfileData = async (access_token: string) => {
   const options = {
@@ -73,7 +74,15 @@ export default async function page() {
 
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Profile URL</p>
-        <Code>{userData?.external_urls?.spotify}</Code>
+        <div className="flex gap-2">
+          <Code href={userData?.external_urls?.spotify}>
+            {userData?.external_urls?.spotify}
+          </Code>
+          <ClipboardButton
+            title="Copy"
+            value={userData?.external_urls?.spotify}
+          />
+        </div>
       </div>
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Subscription type</p>

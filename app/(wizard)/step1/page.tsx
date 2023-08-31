@@ -18,11 +18,14 @@ export default async function page() {
     <div>
       <h1>Choose a vibe</h1>
       <div className="flex gap-12 pt-24 w-full flex-wrap">
-        <VibeCard title="running" />
-        <VibeCard title="disco" />
+        <VibeCard title="running" seedAttributes={["High BPM"]} />
+        <VibeCard
+          title="disco"
+          seedAttributes={["High BPM, High danceability"]}
+        />
         <VibeCard title="focus" />
         <VibeCard title="hip hop" />
-        <VibeCard title="k-pop" />
+        <VibeCard title="k-pop" seedAttributes={["Korean hits"]} />
         <VibeCard title="custom" />
       </div>
     </div>

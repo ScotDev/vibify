@@ -13,7 +13,7 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
   const [tempoValue, setTempoValue] = useState(85);
   // const [energyValue, setEnergyValue] = useState(20);
   const [popularityValue, setPopularityValue] = useState(90);
-  const [totalTracksValue, setTotalTracksValue] = useState(10);
+  const [totalTracksValue, setTotalTracksValue] = useState(20);
 
   const handleTempoChange = (e: any) => {
     setTempoValue(e.target.value);
@@ -41,6 +41,10 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submit");
+    if (selectedGenres.length === 0) {
+      alert("Please select at least one genre");
+      return;
+    }
 
     router.push(
       `/step3?seed=${seed}&tracks=${selectedTracks.join(
@@ -66,14 +70,14 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
         </h2>
 
         <div className="flex flex-wrap gap-12 ">
-          <div className="pt-6 w-96">
+          {/* <div className="pt-6 w-96">
             <TagInput
               title="tracks"
               onSelect={handleTrackSelect}
               placeholder="Coco Chanel, CUFF IT, Crazy In Love"
             />
             <div className="flex flex-wrap gap-2 pt-2"></div>
-          </div>
+          </div> */}
           <div className="pt-6 w-96 relative">
             <SearchInput
               title="Seed genres"
