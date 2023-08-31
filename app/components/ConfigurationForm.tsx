@@ -94,6 +94,7 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
             value={tempoValue}
             min={30}
             max={200}
+            step={5}
           />
           <SliderInput
             title="Number of tracks"
@@ -115,6 +116,7 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
             value={popularityValue}
             min={0}
             max={100}
+            step={10}
           />
         </div>
       </div>

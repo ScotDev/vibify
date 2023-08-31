@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Avatar from "./Avatar";
-import Button from "./Button";
 
 import { DM_Mono } from "next/font/google";
 
@@ -14,17 +13,13 @@ export default async function Navbar({ data }: { data: any }) {
           <p className={Mono.className}>vibify</p>
         </Link>
 
-        {data.session?.user ? (
+        {data.session?.user && (
           <Link href="/profile">
             <Avatar
               name={data?.session?.user.user_metadata?.name}
               subtitle={data?.session?.user.user_metadata?.email}
               image_URL={data?.session?.user.user_metadata?.avatar_url}
             />
-          </Link>
-        ) : (
-          <Link href="/login">
-            <Button title="Log in" />
           </Link>
         )}
       </nav>

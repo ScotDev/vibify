@@ -23,6 +23,7 @@ export default function Login() {
     router.refresh();
   };
 
+  // https://netninja.dev/courses/next-13-masterclass/lectures/48541276
   return (
     <div>
       <Button title="Log in with" hasImage onClick={() => handleSignIn()} />

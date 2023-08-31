@@ -59,6 +59,7 @@ type SliderInputProps = {
   value: number;
   min: number;
   max: number;
+  step?: number;
 };
 
 const SliderInput: React.FC<SliderInputProps> = ({
@@ -67,6 +68,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
   value,
   min,
   max,
+  step,
 }) => {
   // const [grade, setGrade] = useState("Average");
 
@@ -86,6 +88,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
         name="slider"
         min={min}
         max={max}
+        step={step}
         value={value}
         className="accent-orange-600 w-full"
         onChange={onChange}
@@ -162,7 +165,7 @@ const SearchInput = ({
       </label>
       <input
         className="mt-4"
-        type="text"
+        type="search"
         name="textInput"
         placeholder={placeholder}
         onKeyDown={(e) => handleKeyDown(e)}
