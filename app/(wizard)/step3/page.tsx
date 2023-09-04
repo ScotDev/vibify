@@ -8,6 +8,7 @@ import { msToMinSec } from "@/app/utils/calc";
 
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import type { Database } from "@/supabase";
 
 export default async function page({
@@ -120,6 +121,10 @@ export default async function page({
   const averageEnergy = Math.round(
     (totalEnergy / audioFeatures.audio_features.length) * 100
   );
+
+  if (!data.session) {
+    redirect("/login");
+  }
 
   return (
     // <div className="lg:pr-48">

@@ -4,10 +4,12 @@ import SmallMediaItem from "../components/SmallMediaItem";
 
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import type { Database } from "@/supabase";
-import Login from "../components/Login";
 import ClipboardButton from "../components/ClipboardButton";
+
+// export const dynamic = "force-dynamic";
 
 const getProfileData = async (access_token: string) => {
   const options = {
@@ -22,10 +24,14 @@ const getProfileData = async (access_token: string) => {
 };
 
 const getTopTracks = async (access_token: string) => {
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
   const options = {
     headers: {
       Authorization: `Bearer ${access_token}`,
       "Content-Type": "application/json",
+    },
+    next: {
+      revalidate: 0,
     },
     // time_range: "short_term",
   };
@@ -43,6 +49,10 @@ export default async function page() {
   const { data } = await supabase.auth.getSession();
   // console.log(data.session);
 
+  if (!data.session) {
+    redirect("/login");
+  }
+
   const userData = await getProfileData(data.session?.provider_token as string);
   // console.log(userData);
 
@@ -50,15 +60,6 @@ export default async function page() {
     data.session?.provider_token as string
   );
   // console.log(userTopItems);
-
-  // TODO: Replace with protected route
-  if (!data.session) {
-    return (
-      <div className="flex flex-col pt-12 gap-6">
-        <Login />
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col pt-12 gap-6">

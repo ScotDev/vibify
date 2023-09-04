@@ -13,6 +13,7 @@ export default function Button() {
     // router.refresh();
     if (!error) {
       console.log("signed out");
+      router.refresh();
       router.push("/login");
     }
 

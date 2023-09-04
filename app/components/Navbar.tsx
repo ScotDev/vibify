@@ -13,7 +13,7 @@ export default async function Navbar({ data }: { data: any }) {
           <p className={Mono.className}>vibify</p>
         </Link>
 
-        {data.session?.user && (
+        {data.session && (
           <Link href="/profile">
             <Avatar
               name={data?.session?.user.user_metadata?.name}

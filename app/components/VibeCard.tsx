@@ -72,11 +72,11 @@ export default function VibeCard({
 
         <div className="mx-auto">{icon(title)}</div>
         <div className="grid grid-cols-2 divide-x items-center text-center text-neutral-300">
-          {seedAttributes &&
+          {/* {seedAttributes &&
             seedAttributes.length > 0 &&
             seedAttributes.map((attribute, index) => {
               return <Tag key={index} title={attribute} />;
-            })}
+            })} */}
         </div>
       </div>
       {/* <div
