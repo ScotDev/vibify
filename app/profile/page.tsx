@@ -8,10 +8,13 @@ import { redirect } from "next/navigation";
 
 import type { Database } from "@/supabase";
 import ClipboardButton from "../components/ClipboardButton";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 // export const dynamic = "force-dynamic";
 
 const getProfileData = async (access_token: string) => {
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
   const options = {
     headers: {
       Authorization: `Bearer ${access_token}`,
@@ -30,9 +33,9 @@ const getTopTracks = async (access_token: string) => {
       Authorization: `Bearer ${access_token}`,
       "Content-Type": "application/json",
     },
-    next: {
-      revalidate: 0,
-    },
+    // next: {
+    //   revalidate: 0,
+    // },
     // time_range: "short_term",
   };
 
@@ -66,11 +69,13 @@ export default async function page() {
       <h1>Profile</h1>
       <div className="flex flex-col pt-6 gap-2 max-w-96 py-2">
         <p className="text-xs">Display name</p>
-        <h3>{data?.session?.user.user_metadata?.name}</h3>
+        {/* <h3>{data?.session?.user.user_metadata?.name}</h3> */}
+        <h3>{userData.display_name}</h3>
       </div>
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Email address</p>
-        <h4>{data?.session?.user.user_metadata?.email}</h4>
+        {/* <h4>{data?.session?.user.user_metadata?.email}</h4> */}
+        <h4>{userData?.email}</h4>
       </div>
 
       <div className="flex flex-col gap-2 max-w-96 py-2">
@@ -97,11 +102,13 @@ export default async function page() {
 
       <p className="text-xl">Top tracks last 4 weeks</p>
       {/* TODO: Add next loading to track gallery here */}
-      <div className="flex flex-wrap gap-16 mb-24">
+
+      <div className="flex flex-wrap gap-12 md:gap-16 mb-24">
         {userTopItems?.items?.map((item: any) => {
           return <SmallMediaItem key={item.name} data={item} />;
         })}
       </div>
+
       <SignOutButton />
     </div>
   );

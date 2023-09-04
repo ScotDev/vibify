@@ -17,7 +17,7 @@ export default function Avatar({ name, subtitle, image_URL }: AvatarProps) {
       />
       <div className="flex-col hidden md:flex">
         <p className="text-neutral-100">{name ?? "User"}</p>
-        <p className="text-neutral-300 font-light">
+        <p className="text-neutral-300 font-light text-sm">
           {subtitle ? subtitle : "Product designer"}
         </p>
       </div>

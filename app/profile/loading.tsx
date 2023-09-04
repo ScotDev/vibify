@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="grid items-center text-center">
+    <div className="grid items-center ">
       <p>Loading...</p>
     </div>
   );
