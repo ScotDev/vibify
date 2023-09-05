@@ -11,13 +11,13 @@ export default async function page() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data } = await supabase.auth.getSession();
 
-  if (!data.session?.user) {
+  if (!data.session) {
     return redirect("/login");
   }
   return (
     <div>
       <h1>Choose a vibe</h1>
-      <div className="flex gap-12 pt-24 w-full flex-wrap">
+      <div className="md:flex md:justify-normal grid grid-cols-2 gap-6 lg:gap-12 pt-12 md:pt-24 w-full flex-wrap">
         <VibeCard title="running" seedAttributes={["High BPM"]} />
         <VibeCard
           title="disco"

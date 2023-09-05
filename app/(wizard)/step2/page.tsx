@@ -1,5 +1,3 @@
-// "use client";
-
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { redirect } from "next/navigation";
 
@@ -18,9 +16,9 @@ export default async function page({
 
   const { data } = await supabase.auth.getSession();
 
-  // if (!data.session) {
-  //   return redirect("/login");
-  // }
+  if (!data.session) {
+    return redirect("/login");
+  }
 
   return (
     <>
