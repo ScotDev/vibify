@@ -57,12 +57,13 @@ export default async function page({
       },
     };
     const genresParam = genres.length > 0 ? `&seed_genres=${genres}` : "";
+    const tracksParam = tracks.length > 0 ? `&seed_tracks=${tracks}` : "";
     console.log(
-      `https://api.spotify.com/v1/recommendations?limit=${totalTracks}${genresParam}&target_tempo=${tempo}&target_popularity=${popularity}`
+      `https://api.spotify.com/v1/recommendations?limit=${totalTracks}${genresParam}${tracksParam}&target_tempo=${tempo}&target_popularity=${popularity}`
     );
 
     const res = await fetch(
-      `https://api.spotify.com/v1/recommendations?limit=${totalTracks}${genresParam}&target_tempo=${tempo}&target_popularity=${popularity}`,
+      `https://api.spotify.com/v1/recommendations?limit=${totalTracks}${genresParam}${tracksParam}&target_tempo=${tempo}&target_popularity=${popularity}`,
       // &seed_tracks=${tracks}
       // `https://api.spotify.com/v1/recommendations?limit=${totalTracks}&market=GB&seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA&target_tempo=${tempo}&target_energy=${
 

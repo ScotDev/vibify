@@ -100,7 +100,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
   );
 };
 
-const SearchInput = ({
+const LocalSearchInput = ({
   title,
   endpoint,
   placeholder,
@@ -197,4 +197,108 @@ const SearchInput = ({
   );
 };
 
-export { TagInput, SliderInput, Tag, SearchInput };
+const SpotifySearchInput = ({
+  title,
+  endpoint,
+  placeholder,
+  handleResultSelect,
+}: {
+  title: string;
+  endpoint: string;
+  placeholder: string;
+  handleResultSelect: (value: any) => void;
+}) => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [results, setResults] = useState<any[]>([]);
+  const [selectedVals, setSelectedVals] = useState<any[]>([]);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value.trim());
+
+    // if (!e.nativeEvent.data) {
+    //   setResults([]);
+    //   console.log("cleared");
+    //   setIsLoading(false);
+    // }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      // const value = e.currentTarget.value.trim();
+      // if (value !== "") {
+      //   // setSelectedVals([...selectedVals, value]);
+      //   // onSelect(value);
+      //   e.currentTarget.value = "";
+      // }
+    }
+  };
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      // Call the API or perform other expensive operations here
+      if (searchTerm.length < 1) return setResults([]);
+      const res = await fetch(`${endpoint}?term=${searchTerm}`);
+      const formattedRes = await res.json();
+      if (formattedRes.tracks.length < 1)
+        return setResults(["No results found"]);
+      console.log("res", formattedRes.tracks);
+      setResults(formattedRes.tracks);
+      console.log("Search term:", searchTerm);
+      // setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(delayDebounceFn);
+  }, [endpoint, searchTerm]);
+
+  const handleSelect = (value: any) => {
+    handleResultSelect(value);
+    setSelectedVals([...selectedVals, value]);
+    setResults([]);
+  };
+
+  return (
+    <div className="flex flex-col w-full py-2">
+      <label htmlFor="textInput" className="capitalize">
+        {title}
+      </label>
+      <input
+        className="mt-4"
+        type="search"
+        name="textInput"
+        placeholder={placeholder}
+        onKeyDown={(e) => handleKeyDown(e)}
+        onChange={handleInputChange}
+        inputMode="text"
+        autoComplete="off"
+      />
+      {results.length > 0 && (
+        <ul className="flex flex-col z-20 overflow-y-scroll bg-black border-solid border-t-0 border-2 border-neutral-700 static w-full">
+          <h5 className="text-xl px-4 py-4">Results</h5>
+          {results.length > 0 &&
+            results.map((result) => (
+              // <Tag key={result} title={result} />
+              <li
+                key={result.id}
+                onClick={() =>
+                  handleSelect({ id: result.id, title: result.name })
+                }
+                className="flex flex-col gap-1 cursor-pointer bg-black w-full px-4 py-2 hover:bg-neutral-600"
+              >
+                <p className="capitalize font-medium truncate">{result.name}</p>
+                <p className="capitalize text-sm text-neutral-400 truncate">
+                  {result.artists[0].name}
+                </p>
+                <p className="capitalize text-sm text-neutral-400 truncate">
+                  {result.album.name}
+                </p>
+              </li>
+            ))}
+        </ul>
+      )}
+      <div className="flex flex-wrap gap-2 py-4 absolute top-28">
+        {selectedVals.length > 0 &&
+          selectedVals.map((val) => <Tag key={val.id} title={val.title} />)}
+      </div>
+    </div>
+  );
+};
+export { TagInput, SliderInput, Tag, LocalSearchInput, SpotifySearchInput };

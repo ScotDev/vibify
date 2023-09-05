@@ -25,7 +25,7 @@ export default function Login() {
 
   // https://netninja.dev/courses/next-13-masterclass/lectures/48541276
   return (
-    <div>
+    <div className="grid place-items-center">
       <Button title="Log in with" hasImage onClick={() => handleSignIn()} />
     </div>
   );

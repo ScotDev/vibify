@@ -8,8 +8,6 @@ import { redirect } from "next/navigation";
 
 import type { Database } from "@/supabase";
 import ClipboardButton from "../components/ClipboardButton";
-import { Suspense } from "react";
-import Loading from "./loading";
 
 // export const dynamic = "force-dynamic";
 
@@ -49,8 +47,12 @@ const getTopTracks = async (access_token: string) => {
 
 export default async function page() {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data } = await supabase.auth.getSession();
-  // console.log(data.session);
+  const { data, error } = await supabase.auth.getSession();
+  console.log("getSession", data, error);
+
+  if (error || !data.session?.provider_token) {
+    await supabase.auth.refreshSession();
+  }
 
   if (!data.session) {
     redirect("/login");

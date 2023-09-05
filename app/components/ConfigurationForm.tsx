@@ -1,14 +1,18 @@
 "use client";
 import { useState } from "react";
 import Button from "@/app/components/Button";
-import { TagInput, SliderInput, SearchInput } from "@/app/components/Input";
+import {
+  SliderInput,
+  LocalSearchInput,
+  SpotifySearchInput,
+} from "@/app/components/Input";
 
 import { useRouter } from "next/navigation";
 
 export default function ConfigurationForm({ seed }: { seed: string }) {
   const router = useRouter();
 
-  const [selectedTracks, setSelectedTracks] = useState([] as string[]);
+  const [selectedTracks, setSelectedTracks] = useState([] as any[]);
   const [selectedGenres, setSelectedGenres] = useState([] as string[]);
   const [tempoValue, setTempoValue] = useState(85);
   // const [energyValue, setEnergyValue] = useState(20);
@@ -29,8 +33,9 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
     setTotalTracksValue(e.target.value);
   };
 
-  const handleTrackSelect = (value: string) => {
-    setSelectedTracks([...selectedTracks, value]);
+  const handleTrackSelect = (value: any) => {
+    console.log(value);
+    setSelectedTracks([...selectedTracks, value.id]);
   };
 
   const handleGenreSelect = (value: string) => {
@@ -49,7 +54,7 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
     router.push(
       `/step3?seed=${seed}&tracks=${selectedTracks.join(
         ","
-      )}&genres=${selectedGenres.join(
+      )}&genres=${selectedGenres.join(",")}&tracks=${selectedTracks.join(
         ","
       )}&tempo=${tempoValue}&popularity=${popularityValue}&totaltracks=${totalTracksValue}
       `
@@ -79,11 +84,19 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
             <div className="flex flex-wrap gap-2 pt-2"></div>
           </div> */}
           <div className="pt-6 w-96 relative">
-            <SearchInput
+            <LocalSearchInput
               title="Seed genres"
               placeholder="House, Techno, Country"
               handleResultSelect={handleGenreSelect}
-              endpoint="/api/test"
+              endpoint="/api/genres"
+            />
+          </div>
+          <div className="pt-6 w-96 relative">
+            <SpotifySearchInput
+              title="Seed tracks"
+              placeholder="Efecto, Crazy In Love, CUFF IT"
+              handleResultSelect={handleTrackSelect}
+              endpoint="/api/tracks"
             />
           </div>
         </div>
