@@ -105,7 +105,7 @@ export default async function page() {
       <p className="text-xl">Top tracks last 4 weeks</p>
       {/* TODO: Add next loading to track gallery here */}
 
-      <div className="flex flex-wrap gap-4 md:gap-16 mb-24">
+      <div className="md:flex md:flex-wrap grid grid-cols-2 gap-6 md:gap-16 mb-24">
         {userTopItems?.items?.map((item: any) => {
           return <SmallMediaItem key={item.name} data={item} />;
         })}
