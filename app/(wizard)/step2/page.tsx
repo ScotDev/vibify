@@ -17,7 +17,7 @@ export default async function page({
   const { data } = await supabase.auth.getSession();
 
   if (!data.session) {
-    return redirect("/login");
+    redirect("/login");
   }
 
   return (
