@@ -11,7 +11,7 @@ export default async function page() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data } = await supabase.auth.getSession();
 
-  if (!data.session) {
+  if (!data?.session) {
     redirect("/login");
   }
   return (

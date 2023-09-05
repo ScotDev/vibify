@@ -50,9 +50,9 @@ export default async function page() {
   const { data, error } = await supabase.auth.getSession();
   console.log("getSession", data, error);
 
-  if (error || !data.session?.provider_token) {
-    await supabase.auth.refreshSession();
-  }
+  // if (error || !data.session?.provider_token) {
+  //   await supabase.auth.refreshSession();
+  // }
 
   if (!data.session) {
     redirect("/login");
