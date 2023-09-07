@@ -74,15 +74,7 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
           <span className="font-bold capitalize">{seed}</span>
         </h2>
 
-        <div className="flex flex-wrap gap-12 ">
-          {/* <div className="pt-6 w-96">
-            <TagInput
-              title="tracks"
-              onSelect={handleTrackSelect}
-              placeholder="Coco Chanel, CUFF IT, Crazy In Love"
-            />
-            <div className="flex flex-wrap gap-2 pt-2"></div>
-          </div> */}
+        <div className="grid grid-cols-2 gap-12 h-40">
           <div className="pt-6 w-96 relative">
             <LocalSearchInput
               title="Seed genres"

@@ -15,6 +15,22 @@ export async function GET(request: NextRequest) {
     const supabase = createRouteHandlerClient<Database>({ cookies });
     await supabase.auth.exchangeCodeForSession(code);
   }
+
+  // const { data, error } = await supabase.auth.getSession();
+
+  // if (!error && data.session) {
+  //   console.log(data);
+  //   await fetch("/api/cookie", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       cookieName: "providerRefreshToken",
+  //       cookieValue: data.session.provider_refresh_token,
+  //     }),
+  //   });
+  // }
   // URL to redirect to after sign in process completes
-  return NextResponse.redirect(requestUrl.origin);
+  return NextResponse.redirect(`${requestUrl.origin}/welcome`);
 }

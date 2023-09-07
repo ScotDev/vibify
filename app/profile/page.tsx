@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 import type { Database } from "@/supabase";
 import ClipboardButton from "../components/ClipboardButton";
 
-// export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 const getProfileData = async (access_token: string) => {
   // await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -49,6 +49,10 @@ export default async function page() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data, error } = await supabase.auth.getSession();
   console.log("getSession", data, error);
+
+  // supabase.auth.onAuthStateChange((event, session) => {
+  //   console.log("authStateChange", event, session);
+  // });
 
   // if (error || !data.session?.provider_token) {
   //   await supabase.auth.refreshSession();

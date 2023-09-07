@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 import data from "../../../data/genres.json";
-
-import type { NextRequest } from "next/server";
 
 function search(term: string) {
   const pattern = new RegExp(term, "i");

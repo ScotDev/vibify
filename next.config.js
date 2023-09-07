@@ -14,8 +14,10 @@ const nextConfig = {
       { protocol: "https", hostname: "scontent-ams4-1.xx.fbcdn.net" },
       { protocol: "https", hostname: "scontent-lcy1-1.xx.fbcdn.net" },
       { protocol: "https", hostname: "scontent-cdg4-3.xx.fbcdn.net" },
+      { protocol: "https", hostname: "scontent-fra5-2.xx.fbcdn.net" },
     ],
   },
+  experimental: { serverActions: true },
 };
 
 module.exports = nextConfig;
