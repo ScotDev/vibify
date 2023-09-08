@@ -28,7 +28,6 @@ export default function Cookie() {
       setCookie("providerAccessToken", providerAccessToken, {
         maxAge: 3600,
         secure: true,
-        httpOnly: true,
       });
       setCookie("providerRefreshToken", providerRefreshToken, {
         maxAge: oneDay * 365,
