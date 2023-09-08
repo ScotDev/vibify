@@ -5,14 +5,30 @@ import SmallMediaItem from "../components/SmallMediaItem";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+// import { hasCookie, getCookie } from "cookies-next";
 
 import type { Database } from "@/supabase";
 import ClipboardButton from "../components/ClipboardButton";
 
 export const dynamic = "force-dynamic";
 
+const checkToken = async () => {
+  const hasAccessToken = cookies().has("providerAccessToken");
+  if (hasAccessToken) {
+    return {
+      data: { access_token: cookies().get("providerAccessToken")?.value },
+      error: null,
+    };
+  }
+  const res = await fetch(`${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify`);
+  const { data, error } = await res.json();
+  return { data, error };
+};
+
 const getProfileData = async (access_token: string) => {
   // await new Promise((resolve) => setTimeout(resolve, 3000));
+
+  // TODO: Add error handling here
   const options = {
     headers: {
       Authorization: `Bearer ${access_token}`,
@@ -26,6 +42,7 @@ const getProfileData = async (access_token: string) => {
 
 const getTopTracks = async (access_token: string) => {
   // await new Promise((resolve) => setTimeout(resolve, 3000));
+  // TODO: Add error handling here
   const options = {
     headers: {
       Authorization: `Bearer ${access_token}`,
@@ -49,23 +66,22 @@ export default async function page() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data, error } = await supabase.auth.getSession();
 
-  const cookieStore = cookies();
+  // const cookieStore = cookies();
 
   // if (error || !data.session?.provider_token) {
   //   await supabase.auth.refreshSession();
   // }
-  const spotifyToken = cookieStore.get("providerAccessToken")?.value;
-  console.log(spotifyToken);
+  // const spotifyToken = cookieStore.get("providerAccessToken")?.value;
+  const token = await checkToken();
+  // console.log(spotifyToken);
 
-  if (!data.session) {
+  if (!data.session || error) {
     redirect("/login");
   }
 
-  const userData = await getProfileData(spotifyToken as string);
-  // console.log(userData);
+  const userData = await getProfileData(token.data.access_token as string);
 
-  const userTopItems = await getTopTracks(spotifyToken as string);
-  // console.log(userTopItems);
+  const userTopItems = await getTopTracks(token.data.access_token as string);
 
   return (
     <div className="flex flex-col pt-12 gap-6">

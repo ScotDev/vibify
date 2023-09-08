@@ -22,9 +22,9 @@ export default async function page({
   };
 }) {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data } = await supabase.auth.getSession();
+  const { data, error } = await supabase.auth.getSession();
   const cookieStore = cookies();
-  const spotifyToken = cookieStore.get("providerAccessToken")?.value;
+  // const spotifyToken = cookieStore.get("providerAccessToken")?.value;
 
   const seed = searchParams.seed,
     tracks: string = searchParams.tracks,
@@ -33,6 +33,23 @@ export default async function page({
     tempo: any = searchParams.tempo,
     popularity: any = searchParams.popularity,
     totalTracks: any = searchParams.totaltracks;
+
+  const checkToken = async () => {
+    const cookieStore = cookies();
+    console.log(cookieStore.getAll());
+    const hasAccessToken = cookieStore.get("providerAccessToken");
+    if (hasAccessToken) {
+      return {
+        data: { access_token: cookieStore.get("providerAccessToken")?.value },
+        error: null,
+      };
+    }
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify`
+    );
+    const { data, error } = await res.json();
+    return { data, error };
+  };
 
   const getSeedIDs = async (access_token: string) => {
     const options = {
@@ -95,9 +112,14 @@ export default async function page({
     return await res.json();
   };
 
-  const recommendations = await getRecommendations(spotifyToken as string);
+  const spotifyToken = await checkToken();
+  if (spotifyToken.error) return console.log(spotifyToken.error);
+
+  const recommendations = await getRecommendations(
+    spotifyToken.data.access_token as string
+  );
   const audioFeatures = await getAudioFeatures(
-    spotifyToken as string,
+    spotifyToken.data.access_token as string,
     recommendations?.tracks?.map((track: any) => track.id)
   );
   const totalDuration = recommendations?.tracks?.reduce(
@@ -120,7 +142,7 @@ export default async function page({
     (totalEnergy / audioFeatures.audio_features.length) * 100
   );
 
-  if (!data.session) {
+  if (!data.session || error) {
     redirect("/login");
   }
 

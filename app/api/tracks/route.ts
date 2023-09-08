@@ -1,13 +1,22 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import type { Database } from "@/supabase";
 
-// function search(term: string) {
-//   const pattern = new RegExp(term, "i");
-//   return data.genres.filter((item: string) => pattern.test(item));
+const checkToken = async () => {
+  const cookieStore = cookies();
+  console.log(cookieStore.getAll());
+  const hasAccessToken = cookieStore.get("providerAccessToken");
+  if (hasAccessToken) {
+    return {
+      data: { access_token: cookieStore.get("providerAccessToken")?.value },
+      error: null,
+    };
+  }
+  const res = await fetch(`${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify`);
+  const { data, error } = await res.json();
+  return { data, error };
+};
 
 const searchTracks = async (access_token: string, term: string) => {
   const options = {
@@ -28,19 +37,22 @@ const searchTracks = async (access_token: string, term: string) => {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   console.log(searchParams);
-  const cookieStore = cookies();
-  const spotifyToken = cookieStore.get("providerAccessToken")?.value;
+  const { data, error } = await checkToken();
+  // const spotifyToken = cookies().get("providerAccessToken")?.value;
 
   // const supabase = createServerComponentClient<Database>({ cookies });
   // const { data } = await supabase.auth.getSession();
 
   // https://developer.spotify.com/documentation/web-api/reference/get-recommendation-genres
-
+  if (error) {
+    return console.log(error);
+  }
+  // console.log(data);
   const result = await searchTracks(
-    spotifyToken as string,
+    data.access_token as string,
     searchParams.get("term") || ""
   );
   const tracks = result.tracks.items;
-  console.log(tracks);
+  // console.log(tracks);
   return NextResponse.json({ tracks });
 }

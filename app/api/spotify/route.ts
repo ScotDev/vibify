@@ -64,7 +64,10 @@ export async function GET(request: NextRequest) {
   // https://dev.to/j471n/how-to-use-spotify-api-with-nextjs-50o5
 
   return NextResponse.json({
-    access_token: data.access_token,
-    expires_in: data.expires_in,
+    data: {
+      access_token: data.access_token,
+      expires_in: data.expires_in,
+    },
+    error: null,
   });
 }

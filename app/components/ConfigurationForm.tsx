@@ -74,7 +74,7 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
           <span className="font-bold capitalize">{seed}</span>
         </h2>
 
-        <div className="grid grid-cols-2 gap-12 h-40">
+        <div className="md:grid md:grid-cols-2 md:h-40 flex flex-col gap-12 h-72  ">
           <div className="pt-6 w-96 relative">
             <LocalSearchInput
               title="Seed genres"
