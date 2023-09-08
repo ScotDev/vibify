@@ -28,15 +28,16 @@ const searchTracks = async (access_token: string, term: string) => {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   console.log(searchParams);
+  const cookieStore = cookies();
+  const spotifyToken = cookieStore.get("providerAccessToken")?.value;
 
-  const supabase = createServerComponentClient<Database>({ cookies });
-  const { data } = await supabase.auth.getSession();
-  // console.log(data);
+  // const supabase = createServerComponentClient<Database>({ cookies });
+  // const { data } = await supabase.auth.getSession();
 
   // https://developer.spotify.com/documentation/web-api/reference/get-recommendation-genres
 
   const result = await searchTracks(
-    data.session?.provider_token as string,
+    spotifyToken as string,
     searchParams.get("term") || ""
   );
   const tracks = result.tracks.items;

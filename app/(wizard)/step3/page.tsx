@@ -1,8 +1,5 @@
-// "use client";
-
 import Button from "@/app/components/Button";
 import MediaItem from "@/app/components/MediaItem";
-import Dialog from "@/app/components/Dialog";
 
 import { msToMinSec } from "@/app/utils/calc";
 
@@ -26,6 +23,8 @@ export default async function page({
 }) {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data } = await supabase.auth.getSession();
+  const cookieStore = cookies();
+  const spotifyToken = cookieStore.get("providerAccessToken")?.value;
 
   const seed = searchParams.seed,
     tracks: string = searchParams.tracks,
@@ -96,11 +95,9 @@ export default async function page({
     return await res.json();
   };
 
-  const recommendations = await getRecommendations(
-    data.session?.provider_token as string
-  );
+  const recommendations = await getRecommendations(spotifyToken as string);
   const audioFeatures = await getAudioFeatures(
-    data.session?.provider_token as string,
+    spotifyToken as string,
     recommendations?.tracks?.map((track: any) => track.id)
   );
   const totalDuration = recommendations?.tracks?.reduce(
@@ -151,7 +148,6 @@ export default async function page({
         <p>{energy.toString()}</p> */}
       </div>
       <Button title="Save playlist" />
-      {/* <Dialog /> */}
       <div className="flex flex-col gap-8 py-12 ">
         {recommendations ? (
           recommendations.tracks?.map((track: any) => {

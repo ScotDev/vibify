@@ -11,13 +11,9 @@ export default function Cookie() {
   const supabase = createClientComponentClient<Database>();
 
   const params = useSearchParams();
-  const token = params.get("refreshtoken");
+  const providerRefreshToken = params.get("providerRefreshToken");
+  const providerAccessToken = params.get("providerAccessToken");
 
-  const checkSession = async () => {
-    const { data, error } = await supabase.auth.getSession();
-    console.log(data.session);
-    document.cookie = `providerRefreshToken=test; Secure; HttpOnly; Path=/ Max-Age=3600;`;
-  };
   const oneDay = 24 * 60 * 60 * 1000;
   const options = {
     secure: true,
@@ -26,14 +22,18 @@ export default function Cookie() {
     maxAge: oneDay * 365,
   };
   useEffect(() => {
-    checkSession();
     if (document) {
-      //   console.log(document.cookie);
-      setCookie("providerRefreshToken", token, {
+      // TO-DO: check if cookie exists before setting, avoiding overwriting
+      // if not needed and expiration timing errors
+      setCookie("providerAccessToken", providerAccessToken, {
+        maxAge: 3600,
+        secure: true,
+        httpOnly: true,
+      });
+      setCookie("providerRefreshToken", providerRefreshToken, {
         maxAge: oneDay * 365,
         secure: true,
       });
-      //   document.cookie = `providerRefreshToken=test; Secure; HttpOnly; Path=/ Max-Age=3600;`;
     }
   }, []);
 

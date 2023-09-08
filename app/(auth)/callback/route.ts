@@ -32,8 +32,8 @@ export async function GET(request: NextRequest) {
   // }
   // URL to redirect to after sign in process completes
   return NextResponse.redirect(
-    `${requestUrl.origin}/welcome?refreshtoken=${
+    `${requestUrl.origin}/welcome?providerRefreshToken=${
       data?.session?.provider_refresh_token || "none"
-    }`
+    }&providerAccessToken=${data?.session?.provider_token || "none"}`
   );
 }

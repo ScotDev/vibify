@@ -58,17 +58,17 @@ export default async function page() {
   // if (error || !data.session?.provider_token) {
   //   await supabase.auth.refreshSession();
   // }
+  const spotifyToken = cookieStore.get("providerAccessToken")?.value;
+  console.log(spotifyToken);
 
   if (!data.session) {
     redirect("/login");
   }
 
-  const userData = await getProfileData(data.session?.provider_token as string);
+  const userData = await getProfileData(spotifyToken as string);
   // console.log(userData);
 
-  const userTopItems = await getTopTracks(
-    data.session?.provider_token as string
-  );
+  const userTopItems = await getTopTracks(spotifyToken as string);
   // console.log(userTopItems);
 
   return (
