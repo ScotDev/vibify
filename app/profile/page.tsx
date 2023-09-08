@@ -48,12 +48,8 @@ const getTopTracks = async (access_token: string) => {
 export default async function page() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data, error } = await supabase.auth.getSession();
-  // console.log("getSession", data, error);
+
   const cookieStore = cookies();
-  // console.log(cookieStore.getAll("providerRefreshToken"));
-  // supabase.auth.onAuthStateChange((event, session) => {
-  //   console.log("authStateChange", event, session);
-  // });
 
   // if (error || !data.session?.provider_token) {
   //   await supabase.auth.refreshSession();

@@ -15,25 +15,36 @@ export default function Cookie() {
   const providerAccessToken = params.get("providerAccessToken");
 
   const oneDay = 24 * 60 * 60 * 1000;
-  const options = {
-    secure: true,
-    httpOnly: true,
-    path: "/",
-    maxAge: oneDay * 365,
+
+  const checkSession = async () => {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (!error && data.session) {
+      return true;
+    }
+    return false;
   };
   useEffect(() => {
-    if (document) {
-      // TO-DO: check if cookie exists before setting, avoiding overwriting
-      // if not needed and expiration timing errors
-      setCookie("providerAccessToken", providerAccessToken, {
-        maxAge: 3600,
-        secure: true,
-      });
-      setCookie("providerRefreshToken", providerRefreshToken, {
-        maxAge: oneDay * 365,
-        secure: true,
-      });
-    }
+    const setCookies = async () => {
+      const hasActiveSession = await checkSession();
+      if (document && hasActiveSession) {
+        // TO-DO: check if cookie exists before setting, avoiding overwriting
+        // if not needed and expiration timing errors
+        // Should I check if the user has an active supabase session?
+        // I think so, that would mean that if the user isn't logged in with supabase then they can't use
+        // the spotify tokens, which would give a layer of security and control, as I would be able to
+        // remove a user and block new sign ups if needed.
+        setCookie("providerAccessToken", providerAccessToken, {
+          maxAge: 3600,
+          secure: true,
+        });
+        setCookie("providerRefreshToken", providerRefreshToken, {
+          maxAge: oneDay * 365,
+          secure: true,
+        });
+      }
+    };
+    setCookies();
   }, []);
 
   return <div>Cookie</div>;
