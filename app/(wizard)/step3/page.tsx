@@ -36,7 +36,7 @@ export default async function page({
 
   const checkToken = async () => {
     const cookieStore = cookies();
-    console.log(cookieStore.getAll());
+    // console.log(cookieStore.getAll());
     const hasAccessToken = cookieStore.get("providerAccessToken");
     if (hasAccessToken) {
       return {

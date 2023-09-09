@@ -73,8 +73,8 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
           The chosen vibe is{" "}
           <span className="font-bold capitalize">{seed}</span>
         </h2>
-
-        <div className="md:grid md:grid-cols-2 md:h-40 flex flex-col gap-12 h-72  ">
+        {/* Redo this with grid cols set to repeat with a max width of w-96 - when there are more inputs */}
+        <div className="md:grid md:grid-cols-2 md:h-40 md:w-[816px] flex flex-col gap-12 h-72 ">
           <div className="pt-6 w-96 relative">
             <LocalSearchInput
               title="Seed genres"
