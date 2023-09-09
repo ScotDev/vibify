@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { DM_Sans } from "next/font/google";
 import Navbar from "./components/Navbar";
 import spotify_logo from "@/public/Spotify_Logo_RGB_White.png";
@@ -42,6 +43,7 @@ export default async function RootLayout({
             />
           </div>
         </main>
+        <Analytics />
       </body>
     </html>
   );
