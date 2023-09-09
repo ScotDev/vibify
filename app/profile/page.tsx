@@ -66,14 +66,7 @@ export default async function page() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data, error } = await supabase.auth.getSession();
 
-  // const cookieStore = cookies();
-
-  // if (error || !data.session?.provider_token) {
-  //   await supabase.auth.refreshSession();
-  // }
-  // const spotifyToken = cookieStore.get("providerAccessToken")?.value;
   const token = await checkToken();
-  // console.log(spotifyToken);
 
   if (!data.session || error) {
     redirect("/login");
