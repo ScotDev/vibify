@@ -20,15 +20,8 @@ export default function Login() {
       },
     });
     console.log("data: ", data, "error: ", error);
-    if (!error) {
-      // await fetch("/api/cookie");
-      // const { data } = await supabase.auth.getSession();
-      // console.log("data: ", data);
-      // if (data.session) {
-      // document.cookie = `providerToken=${data?.session?.provider_refresh_token}; HttpOnly; SameSite=Strict; path=/`;
-      // }
-    }
-    router.refresh();
+
+    // router.refresh();
   };
 
   // https://netninja.dev/courses/next-13-masterclass/lectures/48541276
