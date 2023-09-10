@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
+
 import { cookies } from "next/headers";
 
 type SpotifyTokenRequestData = {
@@ -22,7 +23,10 @@ export async function GET(request: NextRequest) {
 
   // This API route takes the refresh token stored in a secure cookie (httpOnly, same-site=strict, max-age)
   //  and uses it to request a new access token from Spotify.
-  const refreshToken = cookies().get("providerRefreshToken");
+  const { searchParams } = new URL(request.url);
+  const refreshToken = searchParams.get("providerRefreshToken");
+  console.log();
+  console.log("New provider access token route hit", refreshToken);
 
   //  If no refresh token is found,
   if (!refreshToken) {
@@ -39,7 +43,7 @@ export async function GET(request: NextRequest) {
 
   const formData: SpotifyTokenRequestData = {
     grant_type: "refresh_token",
-    refresh_token: refreshToken.value,
+    refresh_token: refreshToken,
     // client_id: process.env.NEXT_PUBLIC_SPOTIFY_CLIENTID,
   };
 
@@ -53,21 +57,26 @@ export async function GET(request: NextRequest) {
     body: new URLSearchParams(formData),
     json: true,
   };
-  // console.log(options);
   const newAccessToken = await fetch(
     "https://accounts.spotify.com/api/token",
     options
   );
 
   const data = await newAccessToken.json();
-  // console.log("New access token", data);
+  console.log("New access token", data);
   // https://dev.to/j471n/how-to-use-spotify-api-with-nextjs-50o5
-
-  return NextResponse.json({
-    data: {
-      access_token: data.access_token,
-      expires_in: data.expires_in,
+  // const response =
+  cookies().set("providerAccessToken", data.access_token);
+  return NextResponse.json(
+    {
+      data: {
+        access_token: data.access_token,
+        expires_in: data.expires_in,
+      },
+      error: null,
     },
-    error: null,
-  });
+    {
+      status: 200,
+    }
+  );
 }

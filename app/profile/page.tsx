@@ -5,7 +5,7 @@ import SmallMediaItem from "../components/SmallMediaItem";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-// import { hasCookie, getCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 
 import type { Database } from "@/supabase";
 import ClipboardButton from "../components/ClipboardButton";
@@ -20,8 +20,23 @@ const checkToken = async () => {
       error: null,
     };
   }
-  const res = await fetch(`${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify`);
+  const providerRefreshToken = cookies().get("providerRefreshToken")?.value;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify/?providerRefreshToken=${providerRefreshToken}`
+  );
   const { data, error } = await res.json();
+  const date = new Date(0);
+  const oneHour = new Date(date.setSeconds(3600));
+  if (data) {
+    setCookie("providerAccessToken", data.access_token, {
+      maxAge: 3600,
+      expires: oneHour,
+      secure: true,
+    });
+    console.log("cookies set");
+  }
+
+  console.log(data, error);
   return { data, error };
 };
 
@@ -68,8 +83,15 @@ export default async function page() {
 
   const token = await checkToken();
 
-  if (!data.session || error) {
+  if (!token.data || token.error) {
+    // This works to avoid a hard error on the client, but the singOut logic doesn't actually
+    // seem to excecute (the cookies are not removed)
+    await supabase.auth.signOut();
     redirect("/login");
+  }
+
+  if (!data.session || error) {
+    return redirect("/login");
   }
 
   const userData = await getProfileData(token.data.access_token as string);
