@@ -22,13 +22,11 @@ export default function MediaItem({ data }: { data: any }) {
       <div className="flex gap-6 w-full md:w-1/2 truncate">
         <Link target="_blank" href={data.external_urls.spotify}>
           <div className="h-[100px] w-[100px]">
-            <Image
+            {/* next/image uses too many billable resources on vercel */}
+            <img
               src={data?.album.images[1].url}
-              height={100}
-              width={100}
-              className="rounded-xl"
               alt="Media item cover art"
-              // placeholder="blur"
+              className=" object-fill object-center aspect-square h-full w-full rounded-xl"
             />
           </div>
         </Link>

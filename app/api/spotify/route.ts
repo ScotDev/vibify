@@ -23,9 +23,10 @@ export async function GET(request: NextRequest) {
 
   // This API route takes the refresh token stored in a secure cookie (httpOnly, same-site=strict, max-age)
   //  and uses it to request a new access token from Spotify.
-  const { searchParams } = new URL(request.url);
-  const refreshToken = searchParams.get("providerRefreshToken");
-  console.log();
+  // const { searchParams } = new URL(request.url);
+  // const refreshToken = searchParams.get("providerRefreshToken");
+  const refreshToken = cookies().get("providerRefreshToken")?.value;
+  console.log(cookies().getAll());
   console.log("New provider access token route hit", refreshToken);
 
   //  If no refresh token is found,

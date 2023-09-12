@@ -1,17 +1,18 @@
 import { getCookie, setCookie, hasCookie } from "cookies-next";
 
 const checkToken = async () => {
-  // const cookieStore = cookies();
-  const hasAccessToken = hasCookie("providerAccessToken");
-  if (hasAccessToken) {
+  // Add try catch
+  const accessToken = getCookie("providerAccessToken");
+  if (accessToken) {
     return {
-      data: { access_token: getCookie("providerAccessToken") },
+      data: { access_token: accessToken },
       error: null,
     };
   }
-  const providerRefreshToken = getCookie("providerRefreshToken");
+  // const providerRefreshToken = getCookie("providerRefreshToken");
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify/?providerRefreshToken=${providerRefreshToken}`
+    // `${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify/?providerRefreshToken=${providerRefreshToken}`
+    `${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify`
   );
   const { data, error } = await res.json();
   const date = new Date(0);
@@ -22,10 +23,8 @@ const checkToken = async () => {
       expires: oneHour,
       secure: true,
     });
-    console.log("cookies set", data.access_token);
   }
-
-  console.log(data, error);
+  if (error) console.log(error);
   return { data, error };
 };
 
