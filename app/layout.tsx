@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "Bring your vibes to your playlists",
 };
 
-// export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
