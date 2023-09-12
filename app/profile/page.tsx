@@ -10,7 +10,7 @@ import { setCookie } from "cookies-next";
 import type { Database } from "@/supabase";
 import ClipboardButton from "../components/ClipboardButton";
 
-// export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 const checkToken = async () => {
   const cookieStore = cookies();
