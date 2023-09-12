@@ -13,14 +13,15 @@ import ClipboardButton from "../components/ClipboardButton";
 // export const dynamic = "force-dynamic";
 
 const checkToken = async () => {
-  const hasAccessToken = cookies().has("providerAccessToken");
+  const cookieStore = cookies();
+  const hasAccessToken = cookieStore.has("providerAccessToken");
   if (hasAccessToken) {
     return {
-      data: { access_token: cookies().get("providerAccessToken")?.value },
+      data: { access_token: cookieStore.get("providerAccessToken")?.value },
       error: null,
     };
   }
-  const providerRefreshToken = cookies().get("providerRefreshToken")?.value;
+  const providerRefreshToken = cookieStore.get("providerRefreshToken")?.value;
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify/?providerRefreshToken=${providerRefreshToken}`
   );
@@ -86,7 +87,7 @@ export default async function page() {
   if (!token.data || token.error) {
     // This works to avoid a hard error on the client, but the singOut logic doesn't actually
     // seem to excecute (the cookies are not removed)
-    await supabase.auth.signOut();
+    // await supabase.auth.signOut();
     redirect("/login");
   }
 
