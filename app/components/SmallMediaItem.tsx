@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function SmallMediaItem({ data }: { data: any }) {
   //   console.log(data);
   return (
-    <div className="flex flex-col gap-2 md:gap-6 md:w-52 w-40 ">
+    <div className="flex flex-col gap-2 pb-2 md:gap-6 md:w-52 w-40 ">
       <Link target="_blank" href={data.external_urls.spotify}>
         {/* <Image
           src={data?.album.images[0].url}
@@ -21,12 +21,12 @@ export default function SmallMediaItem({ data }: { data: any }) {
         <img
           src={data?.album.images[0].url}
           alt="Media item cover art"
-          className="object-fill object-center aspect-square h-52 w-52 rounded-xl"
+          className="object-cover object-center aspect-square md:h-52 md:w-52 rounded-xl"
         />
       </Link>
       <div className="flex flex-col h-full gap-4 justify-between ">
         <Link target="_blank" href={data.external_urls.spotify}>
-          <h3 className="font-medium">{data?.name}</h3>
+          <h3 className="font-medium pt-2">{data?.name}</h3>
         </Link>
         {/* TODO: Make artist name into link */}
         <h4 className="text-sm text-neutral-400 flex flex-wrap">
