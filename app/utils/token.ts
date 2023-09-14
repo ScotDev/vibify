@@ -3,6 +3,7 @@ import { getCookie, setCookie, hasCookie } from "cookies-next";
 const checkToken = async () => {
   // Add try catch
   const accessToken = getCookie("providerAccessToken");
+  console.log(5, "token.ts", accessToken);
   if (accessToken) {
     return {
       data: { access_token: accessToken },
@@ -17,6 +18,7 @@ const checkToken = async () => {
   const { data, error } = await res.json();
   const date = new Date(0);
   const oneHour = new Date(date.setSeconds(3600));
+  console.log(21, "token.ts", data, error);
   if (data) {
     setCookie("providerAccessToken", data.access_token, {
       maxAge: 3600,

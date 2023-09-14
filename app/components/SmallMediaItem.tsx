@@ -8,7 +8,7 @@ export default function SmallMediaItem({ data }: { data: any }) {
   return (
     <div className="flex flex-col gap-2 md:gap-6 md:w-52 w-40 ">
       <Link target="_blank" href={data.external_urls.spotify}>
-        <Image
+        {/* <Image
           src={data?.album.images[0].url}
           height={208}
           width={208}
@@ -17,6 +17,11 @@ export default function SmallMediaItem({ data }: { data: any }) {
           alt="Media item cover art"
           // placeholder="blur"
           loading="lazy"
+        /> */}
+        <img
+          src={data?.album.images[0].url}
+          alt="Media item cover art"
+          className="object-fill object-center aspect-square h-52 w-52 rounded-xl"
         />
       </Link>
       <div className="flex flex-col h-full gap-4 justify-between ">

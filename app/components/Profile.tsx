@@ -8,7 +8,7 @@ import SignOutButton from "../components/SignOutButton";
 import Code from "../components/Code";
 import SmallMediaItem from "../components/SmallMediaItem";
 import ClipboardButton from "../components/ClipboardButton";
-import Loading from "./Loading";
+import { Loading, LoadingMediaItem } from "./Loading";
 
 // Local utility imports
 import { checkToken } from "../utils/token";
@@ -100,6 +100,14 @@ export default function Profile() {
     checkSession();
   }, []);
 
+  if (Object.keys(userData).length === 0 && !loading) {
+    return (
+      <div className="grid place-items-center">
+        <h2>Error loading profile information</h2>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col pt-12 gap-6">
       <h1>Profile</h1>
@@ -118,12 +126,12 @@ export default function Profile() {
         <p className="text-xs">Profile URL</p>
         <div className="flex gap-2">
           {loading ? (
-            <Loading />
+            <Loading height="h-10" />
           ) : (
             <>
               <Code href={userData?.external_urls?.spotify} loading={loading}>
                 {userData?.external_urls?.spotify}
-              </Code>{" "}
+              </Code>
               <ClipboardButton
                 title="Copy"
                 value={userData?.external_urls?.spotify}
@@ -153,6 +161,15 @@ export default function Profile() {
       <p className="text-xl">Top tracks last 4 weeks</p>
 
       <div className="md:flex md:flex-wrap grid grid-cols-2 gap-6 md:gap-16 mb-24">
+        {loading && (
+          <>
+            {" "}
+            {Array.from(Array(6).keys()).map((_, index) => {
+              return <LoadingMediaItem key={index} />;
+            })}
+          </>
+        )}
+        {/* <LoadingMediaItem /> */}
         {userTopItems?.items?.map((item: any) => {
           return <SmallMediaItem key={item.name} data={item} />;
         })}
