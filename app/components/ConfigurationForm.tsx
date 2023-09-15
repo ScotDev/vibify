@@ -50,12 +50,19 @@ export default function ConfigurationForm({
   };
 
   const handleTrackSelect = (value: any) => {
-    console.log(value);
+    if (selectedGenres.length + selectedTracks.length >= 5) {
+      alert("You can only select a maximum of 5 genres and tracks combined");
+      return;
+    }
     setSelectedTracks([...selectedTracks, value.id]);
   };
 
   const handleGenreSelect = (value: string) => {
     console.log(value);
+    if (selectedGenres.length + selectedTracks.length >= 5) {
+      alert("You can only select a maximum of 5 genres and tracks combined");
+      return;
+    }
     setSelectedGenres([...selectedGenres, value]);
   };
 
