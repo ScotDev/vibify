@@ -52,7 +52,7 @@ h3 {
 
 .card {
   /* @apply bg-black w-full aspect-square p-6 grid cursor-pointer transition-all hover:translate-x-2 hover:-translate-y-2; */
-  @apply bg-neutral-800 cursor-pointer p-6 aspect-square w-full grid transition-all hover:translate-x-2 hover:-translate-y-2 min-w-[200px];
+  @apply bg-neutral-800 cursor-pointer p-6 aspect-square w-full grid transition-all hover:translate-x-2 hover:-translate-y-2 min-w-[150px];
 }
 
 .card:hover {

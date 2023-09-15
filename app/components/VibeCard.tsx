@@ -14,18 +14,18 @@ const icon = (title: string) => {
   switch (title) {
     case "running":
       return (
-        <GiRunningShoe className="text-neutral-900 justify-self-center aspect-square text-6xl md:text-[96px] " />
+        <GiRunningShoe className="text-neutral-900 justify-self-center aspect-square text-5xl  " />
       );
       break;
     case "party":
       return (
-        <GiPartyPopper className="text-neutral-900 justify-self-center aspect-square text-6xl md:text-[96px] " />
+        <GiPartyPopper className="text-neutral-900 justify-self-center aspect-square text-5xl " />
       );
       break;
     case "k-pop":
       return (
         <h3
-          className={`${noto_sans_kr.className} font-medium text-4xl md:text-[64px] leading-none text-center `}
+          className={`${noto_sans_kr.className} font-medium text-4xl leading-none text-center `}
         >
           케이팝
         </h3>
@@ -33,19 +33,17 @@ const icon = (title: string) => {
       break;
     case "hip hop":
       return (
-        <GiBasketballBall className="text-neutral-900 justify-self-center aspect-square text-6xl md:text-[96px] " />
+        <GiBasketballBall className="text-neutral-900 justify-self-center aspect-square text-5xl " />
       );
       break;
     case "focus":
       return (
-        <BsHeadphones className="text-neutral-900 justify-self-center aspect-square text-6xl md:text-[96px] " />
+        <BsHeadphones className="text-neutral-900 justify-self-center aspect-square text-5xl " />
       );
       break;
     case "custom":
       return (
-        <h3 className="font-medium text-7xl md:text-9xl leading-none text-center">
-          +
-        </h3>
+        <h3 className="font-medium text-7xl leading-none text-center">+</h3>
       );
       break;
     default:
