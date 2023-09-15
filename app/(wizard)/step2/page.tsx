@@ -49,7 +49,7 @@ export default async function page({
         ...vibe,
         description: "Running",
         tracks: [],
-        genres: ["drum-and-bass", "edm", "work-out", "electronic", "garage"],
+        genres: ["drum-and-bass", "edm", "electronic", "garage"],
         tempo: 140,
         popularity: 100,
         totalTracks: 30,

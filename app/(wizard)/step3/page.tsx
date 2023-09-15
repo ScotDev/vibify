@@ -75,7 +75,8 @@ export default async function page({
     const genresParam = genres.length > 0 ? `&seed_genres=${genres}` : "";
     const tracksParam = tracks.length > 0 ? `&seed_tracks=${tracks}` : "";
     console.log(
-      `https://api.spotify.com/v1/recommendations?limit=${totalTracks}${genresParam}${tracksParam}&target_tempo=${tempo}&target_popularity=${popularity}`
+      `https://api.spotify.com/v1/recommendations?limit=${totalTracks}${genresParam}${tracksParam}&target_tempo=${tempo}&target_popularity=${popularity}`,
+      options
     );
 
     const res = await fetch(

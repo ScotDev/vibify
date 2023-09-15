@@ -95,7 +95,9 @@ export default function Profile() {
         console.log(err);
         setUserTopItems({});
       }
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     };
 
     checkSession();
@@ -169,7 +171,6 @@ export default function Profile() {
             })}
           </>
         )}
-        {/* <LoadingMediaItem /> */}
         {userTopItems?.items?.map((item: any) => {
           return <SmallMediaItem key={item.name} data={item} />;
         })}
