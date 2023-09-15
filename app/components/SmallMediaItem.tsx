@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function SmallMediaItem({ data }: { data: any }) {
   //   console.log(data);
   return (
-    <div className="flex flex-col gap-2 pb-2 md:gap-6 md:w-52 w-40 ">
+    <div className="small-media-item">
       <Link target="_blank" href={data.external_urls.spotify}>
         {/* <Image
           src={data?.album.images[0].url}

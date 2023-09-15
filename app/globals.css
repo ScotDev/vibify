@@ -37,9 +37,22 @@ h1 {
 div.media-item a {
   @apply hover:underline;
 }
+
+.small-media-item {
+  @apply flex flex-col pb-6 max-w-[13rem] gap-2;
+}
+
+.user-items-grid {
+  @apply flex flex-wrap gap-16 mb-24 xs:grid xs:grid-cols-2 xs:gap-6;
+}
 .card svg,
 h3 {
   @apply fill-neutral-200 text-neutral-200;
+}
+
+.card {
+  /* @apply bg-black w-full aspect-square p-6 grid cursor-pointer transition-all hover:translate-x-2 hover:-translate-y-2; */
+  @apply bg-neutral-800 cursor-pointer p-6 aspect-square w-full grid transition-all hover:translate-x-2 hover:-translate-y-2 min-w-[200px];
 }
 
 .card:hover {

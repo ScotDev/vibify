@@ -9,15 +9,31 @@ import {
 
 import { useRouter } from "next/navigation";
 
-export default function ConfigurationForm({ seed }: { seed: string }) {
+interface vibe {
+  name: string;
+  description: string;
+  tracks: string[];
+  genres: string[];
+  tempo: number;
+  popularity: number;
+  totalTracks: number;
+}
+
+export default function ConfigurationForm({
+  seed,
+  vibe,
+}: {
+  seed: string;
+  vibe: vibe;
+}) {
   const router = useRouter();
 
   const [selectedTracks, setSelectedTracks] = useState([] as any[]);
-  const [selectedGenres, setSelectedGenres] = useState([] as string[]);
-  const [tempoValue, setTempoValue] = useState(85);
+  const [selectedGenres, setSelectedGenres] = useState(vibe.genres);
+  const [tempoValue, setTempoValue] = useState(vibe.tempo);
   // const [energyValue, setEnergyValue] = useState(20);
-  const [popularityValue, setPopularityValue] = useState(90);
-  const [totalTracksValue, setTotalTracksValue] = useState(20);
+  const [popularityValue, setPopularityValue] = useState(vibe.popularity);
+  const [totalTracksValue, setTotalTracksValue] = useState(vibe.totalTracks);
 
   const handleTempoChange = (e: any) => {
     setTempoValue(e.target.value);
@@ -63,22 +79,20 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
   // &energy=${energyValue}
 
   return (
-    <form
-      className="flex flex-col gap-12 w-full justify-center"
-      onSubmit={handleSubmit}
-    >
+    <form className="flex flex-col gap-12 w-full" onSubmit={handleSubmit}>
       <div>
         <h1 className="text-3xl">Adjust the vibe</h1>
         <h2 className="text-xl  py-6">
-          The chosen vibe is{" "}
-          <span className="font-bold capitalize">{seed}</span>
+          The chosen vibe is
+          <span className="font-bold capitalize"> {vibe.name}</span>
         </h2>
         {/* Redo this with grid cols set to repeat with a max width of w-96 - when there are more inputs */}
-        <div className="md:grid md:grid-cols-2 md:h-40 md:w-[816px] flex flex-col gap-12 h-72 ">
-          <div className="pt-6 w-96 relative">
+        <div className="flex xs:flex-col gap-12 h-56 ">
+          <div className="pt-6 w-96 relative ">
             <LocalSearchInput
               title="Seed genres"
               placeholder="House, Techno, Country"
+              preselected={vibe.genres}
               handleResultSelect={handleGenreSelect}
               endpoint="/api/genres"
             />
@@ -94,9 +108,9 @@ export default function ConfigurationForm({ seed }: { seed: string }) {
         </div>
       </div>
 
-      <div className="pt-6 ">
+      <div className="pt-6">
         <h3 className="text-xl">Finer details</h3>
-        <div className="pt-6 flex flex-wrap gap-12 ">
+        <div className="pt-6 flex flex-wrap gap-12">
           <SliderInput
             title="Tempo (bpm)"
             onChange={(e) => handleTempoChange(e)}

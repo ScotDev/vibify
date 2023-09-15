@@ -30,7 +30,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={dm_sans.className}>
         <Navbar data={data} />
-        <main className="flex min-h-screen flex-col justify-between px-4 md:px-12 lg:px-24">
+        <main className="flex min-h-screen flex-col justify-between xs:px-4 px-24">
           {children}
           <div className="pt-24 pb-6 flex gap-2 items-center">
             <p className="text-xs">Made with data from</p>

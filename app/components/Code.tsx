@@ -11,7 +11,7 @@ type Props = {
 
 export default function Code({ children, href }: Props) {
   return (
-    <div className="px-4 py-2 bg-black border-2 border-neutral-700 truncate w-full md:w-fit overflow-hidden text-sm">
+    <div className="px-4 py-2 bg-black border-2 border-neutral-700 truncate xs:w-full w-fit overflow-hidden text-sm">
       {href ? (
         <Link href={href} target="_blank">
           <p

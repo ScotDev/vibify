@@ -17,15 +17,14 @@ export default async function page() {
   return (
     <div>
       <h1>Choose a vibe</h1>
-      <div className="md:flex md:justify-normal grid grid-cols-2 gap-6 lg:gap-12 pt-12 md:pt-24 w-full flex-wrap">
-        <VibeCard title="running" seedAttributes={["High BPM"]} />
-        <VibeCard
-          title="disco"
-          seedAttributes={["High BPM, High danceability"]}
-        />
+      {/* <div className="md:flex md:justify-normal grid grid-cols-2 gap-6 lg:gap-12 pt-12 md:pt-24 w-full flex-wrap"> */}
+      <div className="xs:grid-cols-2 flex flex-wrap w-full gap-6 pt-12">
+        <VibeCard title="running" />
+        <VibeCard title="party" />
         <VibeCard title="focus" />
         <VibeCard title="hip hop" />
-        <VibeCard title="k-pop" seedAttributes={["Korean hits"]} />
+        <VibeCard title="k-pop" />
+        <VibeCard title="reggaeton" />
         <VibeCard title="custom" />
       </div>
     </div>

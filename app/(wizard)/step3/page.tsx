@@ -143,6 +143,7 @@ export default async function page({
   );
 
   if (!data.session || error) {
+    await supabase.auth.signOut();
     redirect("/login");
   }
 

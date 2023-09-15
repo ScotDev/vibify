@@ -4,7 +4,7 @@ import { Noto_Sans_KR } from "next/font/google";
 
 import { GiRunningShoe, GiPartyPopper, GiBasketballBall } from "react-icons/gi";
 
-import { BsHeadphones } from "react-icons/bs";
+import { BsHeadphones, BsQuestion } from "react-icons/bs";
 import Link from "next/link";
 import { Tag } from "./Input";
 
@@ -17,7 +17,7 @@ const icon = (title: string) => {
         <GiRunningShoe className="text-neutral-900 justify-self-center aspect-square text-6xl md:text-[96px] " />
       );
       break;
-    case "disco":
+    case "party":
       return (
         <GiPartyPopper className="text-neutral-900 justify-self-center aspect-square text-6xl md:text-[96px] " />
       );
@@ -25,7 +25,7 @@ const icon = (title: string) => {
     case "k-pop":
       return (
         <h3
-          className={`${noto_sans_kr.className} font-medium text-4xl md:text-[64px] text-center `}
+          className={`${noto_sans_kr.className} font-medium text-4xl md:text-[64px] leading-none text-center `}
         >
           케이팝
         </h3>
@@ -50,7 +50,7 @@ const icon = (title: string) => {
       break;
     default:
       return (
-        <GiRunningShoe className="text-neutral-900 justify-self-center aspect-square text-6xl md:text-[96px] " />
+        <BsQuestion className="text-neutral-900 justify-self-center aspect-square text-6xl md:text-[96px] " />
       );
       break;
   }
@@ -67,7 +67,7 @@ export default function VibeCard({
     <Link href={`/step2/?seed=${title}`}>
       <div
         // className="bg-neutral-400 w-[250px] aspect-square p-6 grid cursor-pointer transition-all hover:translate-x-2 hover:-translate-y-2 card"
-        className="bg-black w-full md:w-[250px] aspect-square p-6 grid cursor-pointer transition-all hover:translate-x-2 hover:-translate-y-2 card"
+        className="card"
         onClick={() => console.log(title)}
       >
         <h2 className="font-medium capitalize">{title}</h2>

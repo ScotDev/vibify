@@ -8,7 +8,7 @@ const Mono = DM_Mono({ subsets: ["latin"], weight: ["400"] });
 export default async function Navbar({ data }: { data: any }) {
   return (
     <>
-      <nav className="flex justify-between px-4 md:px-12 lg:px-24 py-6">
+      <nav className="flex justify-between xs:px-4 px-24 py-6">
         <Link href="/">
           <p className={Mono.className}>vibify</p>
         </Link>

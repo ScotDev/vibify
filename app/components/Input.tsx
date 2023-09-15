@@ -22,6 +22,9 @@ const TagInput = ({
       }
     }
   };
+  const handleTagClick = (title: string) => {
+    setSelectedVals(selectedVals.filter((val) => val !== title));
+  };
 
   return (
     <div className="flex flex-col gap-4 w-full py-2">
@@ -39,15 +42,20 @@ const TagInput = ({
 
       <div className="flex flex-wrap gap-2 pt-2">
         {selectedVals.length > 0 &&
-          selectedVals.map((val) => <Tag key={val} title={val} />)}
+          selectedVals.map((val) => (
+            <Tag key={val} title={val} onClick={() => handleTagClick(val)} />
+          ))}
       </div>
     </div>
   );
 };
 
-const Tag = ({ title }: { title: string }) => {
+const Tag = ({ title, onClick }: { title: string; onClick: () => void }) => {
   return (
-    <div className="w-fit h-fit px-4 py-2 text-sm rounded-full grid place-items-center bg-black">
+    <div
+      className="w-fit h-fit px-4 py-2 text-sm rounded-full grid place-items-center bg-black cursor-pointer"
+      onClick={onClick}
+    >
       <p className="font-medium capitalize">{title}</p>
     </div>
   );
@@ -90,7 +98,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
         max={max}
         step={step}
         value={value}
-        className="accent-orange-600 w-full"
+        className="accent-fuchsia-600 w-full"
         onChange={onChange}
       />
       <p>
@@ -104,16 +112,18 @@ const LocalSearchInput = ({
   title,
   endpoint,
   placeholder,
+  preselected,
   handleResultSelect,
 }: {
   title: string;
   endpoint: string;
   placeholder: string;
+  preselected: string[];
   handleResultSelect: (value: string) => void;
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [results, setResults] = useState<string[]>([]);
-  const [selectedVals, setSelectedVals] = useState<string[]>([]);
+  const [selectedVals, setSelectedVals] = useState<string[]>(preselected);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value.trim());
 
@@ -136,6 +146,10 @@ const LocalSearchInput = ({
     }
   };
 
+  const handleTagClick = (title: string) => {
+    setSelectedVals(selectedVals.filter((val) => val !== title));
+  };
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
       // Call the API or perform other expensive operations here
@@ -144,17 +158,17 @@ const LocalSearchInput = ({
       const formattedRes = await res.json();
       if (formattedRes.result.length < 1)
         return setResults(["No results found"]);
-      console.log("res", formattedRes.result[0]);
       setResults(formattedRes.result);
-      console.log("Search term:", searchTerm);
-      // setIsLoading(false);
     }, 1000);
     return () => clearTimeout(delayDebounceFn);
   }, [endpoint, searchTerm]);
 
   const handleSelect = (value: string) => {
-    handleResultSelect(value);
-    setSelectedVals([...selectedVals, value]);
+    if (!selectedVals.some((val) => val === value)) {
+      handleResultSelect(value);
+      setSelectedVals([...selectedVals, value]);
+    }
+    setSearchTerm("");
     setResults([]);
   };
 
@@ -170,6 +184,7 @@ const LocalSearchInput = ({
         placeholder={placeholder}
         onKeyDown={(e) => handleKeyDown(e)}
         onChange={handleInputChange}
+        value={searchTerm}
         inputMode="text"
         autoComplete="off"
       />
@@ -178,7 +193,6 @@ const LocalSearchInput = ({
           <h5 className="text-xl px-4 py-4">Results</h5>
           {results.length > 0 &&
             results.map((result) => (
-              // <Tag key={result} title={result} />
               <li
                 key={result}
                 onClick={() => handleSelect(result)}
@@ -189,9 +203,11 @@ const LocalSearchInput = ({
             ))}
         </ul>
       )}
-      <div className="flex flex-wrap gap-2 py-4 absolute top-28">
+      <div className="flex flex-wrap gap-2 py-4 absolute top-28 overflow-hidden">
         {selectedVals.length > 0 &&
-          selectedVals.map((val) => <Tag key={val} title={val} />)}
+          selectedVals.map((val) => (
+            <Tag key={val} title={val} onClick={() => handleTagClick(val)} />
+          ))}
       </div>
     </div>
   );
@@ -211,47 +227,41 @@ const SpotifySearchInput = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [results, setResults] = useState<any[]>([]);
   const [selectedVals, setSelectedVals] = useState<any[]>([]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value.trim());
-
-    // if (!e.nativeEvent.data) {
-    //   setResults([]);
-    //   console.log("cleared");
-    //   setIsLoading(false);
-    // }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      // const value = e.currentTarget.value.trim();
-      // if (value !== "") {
-      //   // setSelectedVals([...selectedVals, value]);
-      //   // onSelect(value);
-      //   e.currentTarget.value = "";
-      // }
     }
+  };
+
+  const handleTagClick = (id: any) => {
+    setSelectedVals(selectedVals.filter((val) => val.id !== id));
+    setSearchTerm("");
   };
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
-      // Call the API or perform other expensive operations here
+      // Add checktoken from token.ts
       if (searchTerm.length < 1) return setResults([]);
       const res = await fetch(`${endpoint}?term=${searchTerm}`);
       const formattedRes = await res.json();
       if (formattedRes.tracks.length < 1)
         return setResults(["No results found"]);
-      console.log("res", formattedRes.tracks);
       setResults(formattedRes.tracks);
-      console.log("Search term:", searchTerm);
-      // setIsLoading(false);
     }, 1000);
     return () => clearTimeout(delayDebounceFn);
   }, [endpoint, searchTerm]);
 
   const handleSelect = (value: any) => {
-    handleResultSelect(value);
-    setSelectedVals([...selectedVals, value]);
+    if (!selectedVals.some((val) => val.id === value.id)) {
+      handleResultSelect(value);
+      setSelectedVals([...selectedVals, value]);
+    }
+    setSearchTerm("");
     setResults([]);
   };
 
@@ -267,6 +277,7 @@ const SpotifySearchInput = ({
         placeholder={placeholder}
         onKeyDown={(e) => handleKeyDown(e)}
         onChange={handleInputChange}
+        value={searchTerm}
         inputMode="text"
         autoComplete="off"
       />
@@ -296,7 +307,13 @@ const SpotifySearchInput = ({
       )}
       <div className="flex flex-wrap gap-2 py-4 absolute top-28">
         {selectedVals.length > 0 &&
-          selectedVals.map((val) => <Tag key={val.id} title={val.title} />)}
+          selectedVals.map((val) => (
+            <Tag
+              key={val.id}
+              title={val.title}
+              onClick={() => handleTagClick(val.id)}
+            />
+          ))}
       </div>
     </div>
   );

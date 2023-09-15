@@ -74,6 +74,7 @@ export default function Profile() {
       const spotifyToken = await checkToken();
 
       if (!data.session || error || spotifyToken.error || !spotifyToken.data) {
+        await supabase.auth.signOut();
         return router.push("/login");
       }
 
@@ -160,10 +161,9 @@ export default function Profile() {
 
       <p className="text-xl">Top tracks last 4 weeks</p>
 
-      <div className="md:flex md:flex-wrap grid grid-cols-2 gap-6 md:gap-16 mb-24">
+      <div className="user-items-grid">
         {loading && (
           <>
-            {" "}
             {Array.from(Array(6).keys()).map((_, index) => {
               return <LoadingMediaItem key={index} />;
             })}
