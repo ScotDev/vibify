@@ -1,54 +1,54 @@
 import { useState, useEffect } from "react";
 
-const TagInput = ({
-  title,
-  onSelect,
-  placeholder,
-}: {
-  title: string;
-  onSelect: (value: string) => void;
-  placeholder: string;
-}) => {
-  const [selectedVals, setSelectedVals] = useState([] as string[]);
+// const TagInput = ({
+//   title,
+//   onSelect,
+//   placeholder,
+// }: {
+//   title: string;
+//   onSelect: (value: string) => void;
+//   placeholder: string;
+// }) => {
+//   const [selectedVals, setSelectedVals] = useState([] as string[]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const value = e.currentTarget.value.trim();
-      if (value !== "") {
-        setSelectedVals([...selectedVals, value]);
-        onSelect(value);
-        e.currentTarget.value = "";
-      }
-    }
-  };
-  const handleTagClick = (title: string) => {
-    setSelectedVals(selectedVals.filter((val) => val !== title));
-  };
+//   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+//     if (e.key === "Enter") {
+//       e.preventDefault();
+//       const value = e.currentTarget.value.trim();
+//       if (value !== "") {
+//         setSelectedVals([...selectedVals, value]);
+//         onSelect(value);
+//         e.currentTarget.value = "";
+//       }
+//     }
+//   };
+//   const handleTagClick = (title: string) => {
+//     setSelectedVals(selectedVals.filter((val) => val !== title));
+//   };
 
-  return (
-    <div className="flex flex-col gap-4 w-full py-2">
-      <label htmlFor="textInput" className="capitalize">
-        {title}
-      </label>
-      <input
-        type="text"
-        name="textInput"
-        placeholder={placeholder}
-        onKeyDown={(e) => handleKeyDown(e)}
-        inputMode="text"
-        autoComplete="off"
-      />
+//   return (
+//     <div className="flex flex-col gap-4 w-full py-2">
+//       <label htmlFor="textInput" className="capitalize">
+//         {title}
+//       </label>
+//       <input
+//         type="text"
+//         name="textInput"
+//         placeholder={placeholder}
+//         onKeyDown={(e) => handleKeyDown(e)}
+//         inputMode="text"
+//         autoComplete="off"
+//       />
 
-      <div className="flex flex-wrap gap-2 pt-2">
-        {selectedVals.length > 0 &&
-          selectedVals.map((val) => (
-            <Tag key={val} title={val} onClick={() => handleTagClick(val)} />
-          ))}
-      </div>
-    </div>
-  );
-};
+//       <div className="flex flex-wrap gap-2 pt-2">
+//         {selectedVals.length > 0 &&
+//           selectedVals.map((val) => (
+//             <Tag key={val} title={val} onClick={() => handleTagClick(val)} />
+//           ))}
+//       </div>
+//     </div>
+//   );
+// };
 
 const Tag = ({ title, onClick }: { title: string; onClick: () => void }) => {
   return (
@@ -125,7 +125,7 @@ const LocalSearchInput = ({
   const [results, setResults] = useState<string[]>([]);
   const [selectedVals, setSelectedVals] = useState<string[]>(preselected);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value.trim());
+    setSearchTerm(e.target.value);
 
     // if (!e.nativeEvent.data) {
     //   setResults([]);
@@ -153,8 +153,8 @@ const LocalSearchInput = ({
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
       // Call the API or perform other expensive operations here
-      if (searchTerm.length < 1) return setResults([]);
-      const res = await fetch(`${endpoint}?term=${searchTerm}`);
+      if (searchTerm.trim().length < 1) return setResults([]);
+      const res = await fetch(`${endpoint}?term=${searchTerm.trim()}`);
       const formattedRes = await res.json();
       if (formattedRes.result.length < 1)
         return setResults(["No results found"]);
@@ -189,7 +189,7 @@ const LocalSearchInput = ({
         autoComplete="off"
       />
       {results.length > 0 && (
-        <ul className="flex flex-col z-20 overflow-y-scroll bg-black border-solid border-t-0 border-2 border-neutral-700 static w-full">
+        <ul className="search-results">
           <h5 className="text-xl px-4 py-4">Results</h5>
           {results.length > 0 &&
             results.map((result) => (
@@ -229,7 +229,7 @@ const SpotifySearchInput = ({
   const [selectedVals, setSelectedVals] = useState<any[]>([]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value.trim());
+    setSearchTerm(e.target.value);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -246,8 +246,8 @@ const SpotifySearchInput = ({
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
       // Add checktoken from token.ts
-      if (searchTerm.length < 1) return setResults([]);
-      const res = await fetch(`${endpoint}?term=${searchTerm}`);
+      if (searchTerm.trim().length < 1) return setResults([]);
+      const res = await fetch(`${endpoint}?term=${searchTerm.trim()}`);
       const formattedRes = await res.json();
       if (formattedRes.tracks.length < 1)
         return setResults(["No results found"]);
@@ -282,7 +282,7 @@ const SpotifySearchInput = ({
         autoComplete="off"
       />
       {results.length > 0 && (
-        <ul className="flex flex-col z-20 overflow-y-scroll bg-black border-solid border-t-0 border-2 border-neutral-700 static w-full">
+        <ul className="search-results">
           <h5 className="text-xl px-4 py-4">Results</h5>
           {results.length > 0 &&
             results.map((result) => (
@@ -318,4 +318,4 @@ const SpotifySearchInput = ({
     </div>
   );
 };
-export { TagInput, SliderInput, Tag, LocalSearchInput, SpotifySearchInput };
+export { SliderInput, Tag, LocalSearchInput, SpotifySearchInput };

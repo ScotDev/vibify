@@ -21,7 +21,7 @@ export default function SmallMediaItem({ data }: { data: any }) {
         <img
           src={data?.album.images[0].url}
           alt="Media item cover art"
-          className="object-cover object-center aspect-square md:h-52 md:w-52 rounded-xl"
+          className="object-cover object-center aspect-square  rounded-xl"
         />
       </Link>
       <div className="flex flex-col h-full gap-4 justify-between ">

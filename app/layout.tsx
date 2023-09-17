@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   description: "Bring your vibes to your playlists",
 };
 
+// This is a temporary bug fix. Supabase doesn't work properly with SSG - watching github issue for fix
 export const dynamic = "force-dynamic";
 
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";

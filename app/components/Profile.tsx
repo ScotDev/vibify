@@ -32,7 +32,7 @@ export default function Profile() {
   const [userTopItems, setUserTopItems] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
 
   const getProfileData = async (access_token: string) => {
     // TODO: Add error handling here
@@ -73,7 +73,7 @@ export default function Profile() {
       const { data, error } = await supabase.auth.getSession();
       const spotifyToken = await checkToken();
 
-      if (!data.session || error || spotifyToken.error || !spotifyToken.data) {
+      if (!data.session || error || spotifyToken.status !== 200) {
         await supabase.auth.signOut();
         return router.push("/login");
       }
@@ -97,13 +97,17 @@ export default function Profile() {
       }
       setTimeout(() => {
         setLoading(false);
-      }, 2000);
+      }, 1500);
     };
 
     checkSession();
   }, []);
 
-  if (Object.keys(userData).length === 0 && !loading) {
+  if (
+    Object.keys(userData).length === 0 &&
+    Object.keys(userTopItems).length === 0 &&
+    !loading
+  ) {
     return (
       <div className="grid place-items-center">
         <h2>Error loading profile information</h2>
@@ -117,7 +121,7 @@ export default function Profile() {
       <div className="flex flex-col pt-6 gap-2 max-w-96 py-2">
         <p className="text-xs">Display name</p>
         {/* <h3>{data?.session?.user.user_metadata?.name}</h3> */}
-        {loading ? <Loading /> : <h3>{userData.display_name}</h3>}
+        {loading ? <Loading /> : <h3>{userData?.display_name}</h3>}
       </div>
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Email address</p>
@@ -161,7 +165,7 @@ export default function Profile() {
         )}
       </div>
 
-      <p className="text-xl">Top tracks last 4 weeks</p>
+      <p className="text-xl pt-6">Top tracks last 4 weeks</p>
 
       <div className="user-items-grid">
         {loading && (

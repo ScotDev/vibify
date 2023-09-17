@@ -27,7 +27,7 @@ const searchTracks = async (access_token: string, term: string) => {
   };
 
   const res = await fetch(
-    `https://api.spotify.com/v1/search?q=${term}&type=track&limit=6`,
+    `https://api.spotify.com/v1/search?q=${term}&type=track&limit=12`,
     options
   );
   return await res.json();

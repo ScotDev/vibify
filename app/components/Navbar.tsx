@@ -16,9 +16,9 @@ export default async function Navbar({ data }: { data: any }) {
         {data.session && (
           <Link href="/profile">
             <Avatar
-              name={data?.session?.user.user_metadata?.name}
-              subtitle={data?.session?.user.user_metadata?.email}
-              image_URL={data?.session?.user.user_metadata?.avatar_url}
+              name={data.session.user.user_metadata.name}
+              subtitle={data.session.user.user_metadata.email}
+              image_URL={data.session.user.user_metadata.avatar_url}
             />
           </Link>
         )}

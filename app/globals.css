@@ -39,7 +39,7 @@ div.media-item a {
 }
 
 .small-media-item {
-  @apply flex flex-col pb-6 max-w-[13rem] gap-2;
+  @apply flex flex-col pb-6 max-w-[13rem] gap-2 cursor-pointer;
 }
 
 .user-items-grid {
@@ -50,9 +50,19 @@ h3 {
   @apply fill-neutral-200 text-neutral-200;
 }
 
+.card-grid {
+  /* @apply flex flex-wrap gap-6 mb-24 xs:gap-2 xs:grid xs:grid-cols-2; */
+  @apply gap-6 xs:gap-4 mb-24  grid xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5;
+}
+
 .card {
   /* @apply bg-black w-full aspect-square p-6 grid cursor-pointer transition-all hover:translate-x-2 hover:-translate-y-2; */
-  @apply bg-neutral-800 cursor-pointer p-6 aspect-square grid transition-all hover:translate-x-2 hover:-translate-y-2 xs:min-w-[150px] w-52;
+  /* @apply bg-neutral-800 cursor-pointer p-6 aspect-square grid transition-all hover:translate-x-2 hover:-translate-y-2 xs:min-w-[150px] w-52; */
+  @apply bg-neutral-800 cursor-pointer p-6 aspect-square grid gap-2 transition-all hover:translate-x-2 hover:-translate-y-2 max-w-xs;
+}
+
+.search-results {
+  @apply pb-4 flex flex-col z-20 overflow-y-scroll bg-black border-solid border-t-0 border-2 border-neutral-700 static w-full max-h-96;
 }
 
 .card:hover {

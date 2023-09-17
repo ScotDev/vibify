@@ -16,9 +16,8 @@ export default async function page() {
   }
   return (
     <div>
-      <h1>Choose a vibe</h1>
-      {/* <div className="md:flex md:justify-normal grid grid-cols-2 gap-6 lg:gap-12 pt-12 md:pt-24 w-full flex-wrap"> */}
-      <div className="xs:grid-cols-2 flex flex-wrap w-full gap-6 pt-12">
+      <h1 className="pt-12">Choose a vibe</h1>
+      <div className="pt-12 card-grid">
         <VibeCard title="running" />
         <VibeCard title="party" />
         <VibeCard title="focus" />
