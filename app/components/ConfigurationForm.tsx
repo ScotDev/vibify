@@ -136,13 +136,6 @@ export default function ConfigurationForm({
             min={5}
             max={100}
           />
-          {/* <SliderInput
-            title="Energy"
-            onChange={(e) => handleEnergyChange(e)}
-            value={energyValue}
-            min={0}
-            max={100}
-          /> */}
           <SliderInput
             title="Popularity"
             onChange={(e) => handlePopularityChange(e)}
@@ -153,9 +146,7 @@ export default function ConfigurationForm({
           />
         </div>
       </div>
-      {/* <Link href="/step3"> */}
       <Button title="Confirm" type="submit" />
-      {/* </Link> */}
     </form>
   );
 }
