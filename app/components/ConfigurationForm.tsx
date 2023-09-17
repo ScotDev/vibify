@@ -97,7 +97,7 @@ export default function ConfigurationForm({
         <div className="bg-neutral-800 shadow-lg rounded-lg p-6 mt-4 xs:h-auto sm:h-auto md:h-96 xl:h-auto">
           <h3 className="text-xl">Set the tone</h3>
           <div className="xs:flex xs:flex-col xs:gap-2 sm:flex sm:flex-col md:grid md:grid-cols-2 sm:gap-6 gap-12 ">
-            <div className="pt-6 xs:w-full w-full h-60 relative border-2 border-red-400">
+            <div className="pt-6 xs:w-full w-full h-60 relative">
               <LocalSearchInput
                 title="Seed genres"
                 placeholder="House, Techno, Country"
@@ -106,7 +106,7 @@ export default function ConfigurationForm({
                 endpoint="/api/genres"
               />
             </div>
-            <div className="pt-6 xs:w-full w-full h-60 relative border-2 border-blue-400">
+            <div className="pt-6 xs:w-full w-full h-60 relative">
               <SpotifySearchInput
                 title="Seed tracks"
                 placeholder="Efecto, Crazy In Love, CUFF IT"
