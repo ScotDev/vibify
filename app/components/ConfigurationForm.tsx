@@ -94,10 +94,10 @@ export default function ConfigurationForm({
           <span className="font-bold capitalize"> {vibe.name}</span>
         </h2>
         {/* Redo this with grid cols set to repeat with a max width of w-96 - when there are more inputs */}
-        <div className="bg-neutral-800 shadow-lg rounded-lg p-6 mt-4">
+        <div className="bg-neutral-800 shadow-lg rounded-lg p-6 mt-4 xs:h-auto sm:h-auto md:h-96 xl:h-auto">
           <h3 className="text-xl">Set the tone</h3>
-          <div className="flex xs:flex-col xs:gap-2 gap-12 ">
-            <div className="pt-6 xs:w-full w-96 h-60 relative">
+          <div className="xs:flex xs:flex-col xs:gap-2 sm:flex sm:flex-col md:grid md:grid-cols-2 sm:gap-6 gap-12 ">
+            <div className="pt-6 xs:w-full w-full h-60 relative border-2 border-red-400">
               <LocalSearchInput
                 title="Seed genres"
                 placeholder="House, Techno, Country"
@@ -106,7 +106,7 @@ export default function ConfigurationForm({
                 endpoint="/api/genres"
               />
             </div>
-            <div className="pt-6 xs:w-full w-96 h-60 relative">
+            <div className="pt-6 xs:w-full w-full h-60 relative border-2 border-blue-400">
               <SpotifySearchInput
                 title="Seed tracks"
                 placeholder="Efecto, Crazy In Love, CUFF IT"

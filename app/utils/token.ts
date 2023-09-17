@@ -1,8 +1,11 @@
-import { getCookie, setCookie, hasCookie } from "cookies-next";
+import { getCookie, setCookie, hasCookie, getCookies } from "cookies-next";
 
 const checkToken = async () => {
+  const date = new Date(0);
+  const oneHour = new Date(date.setSeconds(3600));
   // Add try catch
   const accessToken = getCookie("providerAccessToken");
+  console.log(6, getCookies());
   console.log(5, "token.ts", accessToken);
   if (accessToken) {
     console.log(8, "access token exists");
@@ -13,14 +16,13 @@ const checkToken = async () => {
     };
   }
   console.log(14, "Requesting new token");
-  // const providerRefreshToken = getCookie("providerRefreshToken");
+
   const res = await fetch(
     // `${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify/?providerRefreshToken=${providerRefreshToken}`
     `${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify`
   );
   const { data, error, status } = await res.json();
-  const date = new Date(0);
-  const oneHour = new Date(date.setSeconds(3600));
+
   console.log(21, "token.ts", data.access_token, error);
   if (data.access_token) {
     setCookie("providerAccessToken", data.access_token, {

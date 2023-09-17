@@ -19,7 +19,7 @@ import { msToMinSec, formatDate } from "@/app/utils/calc";
 export default function MediaItem({ data }: { data: any }) {
   return (
     <div className="flex justify-between media-item">
-      <div className="flex gap-6 w-full  truncate">
+      <div className="flex gap-6 w-full truncate">
         <Link target="_blank" href={data.external_urls.spotify}>
           {/* <div className="h-[100px] w-[100px]"> */}
           {/* next/image uses too many billable resources on vercel */}
@@ -65,7 +65,7 @@ export default function MediaItem({ data }: { data: any }) {
         </div>
       </div>
 
-      <p className="xs:hidden flex w-1/4 px-6">
+      <p className="xs:hidden sm:hidden flex w-1/4 px-6">
         {formatDate(data.album.release_date)}
       </p>
       <p className="xs:hidden flex w-1/4 px-6">

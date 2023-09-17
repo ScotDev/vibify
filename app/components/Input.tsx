@@ -53,10 +53,11 @@ import { useState, useEffect } from "react";
 const Tag = ({ title, onClick }: { title: string; onClick: () => void }) => {
   return (
     <div
-      className="w-fit h-fit px-4 py-2 text-sm rounded-full grid place-items-center bg-black cursor-pointer"
+      // className="w-fit h-fit px-4 py-2 text-sm rounded-full grid place-items-center bg-black cursor-pointer"
+      className="w-fith-fit px-4 py-2 text-sm rounded-full grid place-items-center bg-black cursor-pointer"
       onClick={onClick}
     >
-      <p className="font-medium capitalize">{title}</p>
+      <p className="font-medium capitalize truncate w-full">{title}</p>
     </div>
   );
 };
@@ -243,14 +244,20 @@ const SpotifySearchInput = ({
     setSearchTerm("");
   };
 
+  const emptyResults = [
+    { name: "No results found", artists: [{ name: "" }], album: { name: "" } },
+  ];
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
       // Add checktoken from token.ts
       if (searchTerm.trim().length < 1) return setResults([]);
       const res = await fetch(`${endpoint}?term=${searchTerm.trim()}`);
+      if (res.status !== 200) {
+        return setResults(emptyResults);
+      }
       const formattedRes = await res.json();
-      if (formattedRes.tracks.length < 1)
-        return setResults(["No results found"]);
+      if (formattedRes.tracks.length < 1) return setResults(emptyResults);
       setResults(formattedRes.tracks);
     }, 1000);
     return () => clearTimeout(delayDebounceFn);

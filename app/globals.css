@@ -62,7 +62,7 @@ h3 {
 }
 
 .search-results {
-  @apply pb-4 flex flex-col z-20 overflow-y-scroll bg-black border-solid border-t-0 border-2 border-neutral-700 static w-full max-h-96;
+  @apply pb-4 flex flex-col z-20 overflow-y-scroll  bg-black border-solid border-t-0 border-2 border-neutral-700 static w-full max-h-96;
 }
 
 .card:hover {

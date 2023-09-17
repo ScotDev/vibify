@@ -25,7 +25,10 @@ export async function GET(request: NextRequest) {
   //  and uses it to request a new access token from Spotify.
   // const { searchParams } = new URL(request.url);
   // const refreshToken = searchParams.get("providerRefreshToken");
-  const refreshToken = cookies().get("providerRefreshToken")?.value;
+  const { searchParams } = new URL(request.url);
+  console.log(searchParams);
+  // const refreshToken = cookies().get("providerRefreshToken")?.value;
+  const refreshToken = searchParams.get("refreshtoken");
   // console.log(cookies().getAll());
   console.log("New provider access token route hit", refreshToken);
 

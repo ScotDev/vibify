@@ -23,33 +23,38 @@ export default async function page({
 }) {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data, error } = await supabase.auth.getSession();
-  const cookieStore = cookies();
-  // const spotifyToken = cookieStore.get("providerAccessToken")?.value;
+  // const cookieStore = cookies();
+  // const token = cookieStore.get("providerAccessToken")?.value;
+  // console.log("page 3", cookieStore.getAll());
 
   const seed = searchParams.seed,
     tracks: string = searchParams.tracks,
     genres: string = searchParams.genres,
-    energy: any = searchParams.energy,
-    tempo: any = searchParams.tempo,
-    popularity: any = searchParams.popularity,
-    totalTracks: any = searchParams.totaltracks;
+    energy: Number = searchParams.energy,
+    tempo: Number = searchParams.tempo,
+    popularity: Number = searchParams.popularity,
+    totalTracks: Number = searchParams.totaltracks;
 
   const checkToken = async () => {
     const cookieStore = cookies();
-    // console.log(cookieStore.getAll());
+    console.log(cookieStore.getAll());
     const hasAccessToken = cookieStore.get("providerAccessToken");
+    const refreshToken = cookieStore.get("providerRefreshToken")?.value;
     if (hasAccessToken) {
       return {
         data: { access_token: cookieStore.get("providerAccessToken")?.value },
         error: null,
+        status: 200,
       };
     }
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify`
+      `${process.env.NEXT_PUBLIC_ORIGIN_URL}/api/spotify?refreshtoken=${refreshToken}`
     );
-    const { data, error } = await res.json();
-    return { data, error };
+    const { data, error, status } = await res.json();
+    return { data, error, status };
   };
+
+  const spotifyToken = await checkToken();
 
   const getSeedIDs = async (access_token: string) => {
     const options = {
@@ -113,8 +118,7 @@ export default async function page({
     return await res.json();
   };
 
-  const spotifyToken = await checkToken();
-  if (spotifyToken.error) return console.log(spotifyToken.error);
+  // if (spotifyToken.error) return console.log(spotifyToken.error);
 
   const recommendations = await getRecommendations(
     spotifyToken.data.access_token as string
@@ -143,7 +147,7 @@ export default async function page({
     (totalEnergy / audioFeatures.audio_features.length) * 100
   );
 
-  if (!data.session || error) {
+  if (!data.session || error || !spotifyToken.data.access_token) {
     await supabase.auth.signOut();
     redirect("/login");
   }
