@@ -19,6 +19,11 @@ interface vibe {
   totalTracks: number;
 }
 
+// https://youtu.be/czvSZqnpTHs?t=1220
+// Local input search component should use server action to query
+// Spotify's genre search endpoint, as it will cache the response.
+// The list of genres is rarely updated, so this is a good strategy.
+
 export default function ConfigurationForm({
   seed,
   vibe,

@@ -1,7 +1,8 @@
-"use client";
+// "use client";
 
 // Local component imports
-import Profile from "../components/Profile";
+// import Profile from "../components/Profile";
+import Profile_server from "../components/Profile_server";
 
 // I would much prefer to use next js on the server, but I've run into too many issue with cookies
 // The work-around is simply to bypass the server and use the client directly
@@ -10,7 +11,8 @@ import Profile from "../components/Profile";
 export default function page() {
   return (
     <>
-      <Profile />
+      {/* <Profile /> */}
+      <Profile_server />
     </>
   );
 }

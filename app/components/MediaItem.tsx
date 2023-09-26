@@ -65,7 +65,7 @@ export default function MediaItem({ data }: { data: any }) {
         </div>
       </div>
 
-      <p className="xs:hidden sm:hidden flex w-1/4 px-6">
+      <p className="xs:hidden sm:hidden lg:flex w-1/4 px-6">
         {formatDate(data.album.release_date)}
       </p>
       <p className="xs:hidden flex w-1/4 px-6">
