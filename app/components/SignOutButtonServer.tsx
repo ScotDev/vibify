@@ -32,7 +32,7 @@ export default function SignOutButtonServer() {
       {/* <button className="btn" type="submit">
         Log out
       </button> */}
-      <Button title="Log out" type="submit" hasImage />
+      <Button title="Log out" type="submit" />
     </form>
   );
 }
