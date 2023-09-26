@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import type { Database } from "@/supabase";
-import { setCookie, hasCookie, getCookie, deleteCookie } from "cookies-next";
+import { setCookie, hasCookie } from "cookies-next";
 
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -68,15 +68,15 @@ export default function Welcome() {
   if (providerRefreshToken && redirect_URL) {
     if (seed) {
       console.log("redirecting to: ", `/${redirect_URL}?seed=${seed}`);
-      return router.replace(`/${redirect_URL}?seed=${seed}`);
+      router.push(`/${redirect_URL}?seed=${seed}`);
     }
     console.log("welcome", redirect_URL);
 
-    return router.push("/" + redirect_URL);
+    router.push("/" + redirect_URL);
   }
 
   if (!providerRefreshToken) {
-    return router.push(`/login`);
+    router.push(`/login`);
   }
 
   return (
