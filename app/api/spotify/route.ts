@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
   console.log(searchParams);
   // const refreshToken = cookies().get("providerRefreshToken")?.value;
   const refreshToken = searchParams.get("refreshtoken");
-  // console.log(cookies().getAll());
+  console.log(cookies().getAll());
   console.log("New provider access token route hit", refreshToken);
 
   //  If no refresh token is found,

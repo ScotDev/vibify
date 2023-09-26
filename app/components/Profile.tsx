@@ -19,7 +19,7 @@ import type { Database } from "@/supabase";
 // Third-party imports
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-// Framework imports
+// Next imports
 import { useRouter } from "next/navigation";
 
 // I would much prefer to use next js on the server, but I've run into too many issue with cookies

@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import type { Database } from "@/supabase";
-import { setCookie, hasCookie } from "cookies-next";
+import { setCookie, hasCookie, getCookie, deleteCookie } from "cookies-next";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
 import Button from "@/app/components/Button";
@@ -14,11 +14,14 @@ import { getSubstrings } from "../utils/strings";
 export default function Welcome() {
   const [user, setUser] = useState<string>("");
   const supabase = createClientComponentClient<Database>();
+  const router = useRouter();
 
   const params = useSearchParams();
   const providerRefreshToken = params.get("providerRefreshToken");
   const providerAccessToken = params.get("providerAccessToken");
-
+  const redirect_URL = params.get("redirect_URL");
+  const seed = params.get("seed");
+  console.log(redirect_URL, seed);
   const oneDay = 24 * 60 * 60 * 1000;
 
   useEffect(() => {
@@ -40,6 +43,11 @@ export default function Welcome() {
         const date = new Date(0);
         const oneHour = new Date(date.setSeconds(3600));
         if (!hasCookie("providerAccessToken")) {
+          // deleteCookie("providerAccessToken", {
+          //   maxAge: 3600,
+          //   expires: oneHour,
+          //   secure: true,
+          // });
           setCookie("providerAccessToken", providerAccessToken, {
             maxAge: 3600,
             expires: oneHour,
@@ -56,6 +64,20 @@ export default function Welcome() {
     };
     setCookies();
   }, []);
+
+  if (providerRefreshToken && redirect_URL) {
+    if (seed) {
+      console.log("redirecting to: ", `/${redirect_URL}?seed=${seed}`);
+      return router.replace(`/${redirect_URL}?seed=${seed}`);
+    }
+    console.log("welcome", redirect_URL);
+
+    return router.push("/" + redirect_URL);
+  }
+
+  if (!providerRefreshToken) {
+    return router.push(`/login`);
+  }
 
   return (
     <div className="flex flex-col pt-12 gap-6">

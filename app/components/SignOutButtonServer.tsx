@@ -17,6 +17,10 @@ export default function SignOutButtonServer() {
     if (hasRefreshToken) {
       cookieStore.delete("providerRefreshToken");
     }
+    const hasAccessToken = cookieStore.get("providerAccessToken");
+    if (hasAccessToken) {
+      cookieStore.delete("providerAccessToken");
+    }
     if (error) console.log(error);
     // revalidatePath("/profile");
     // revalidatePath("/");
@@ -28,7 +32,7 @@ export default function SignOutButtonServer() {
       {/* <button className="btn" type="submit">
         Log out
       </button> */}
-      <Button title="Log out" type="submit" />
+      <Button title="Log out" type="submit" hasImage />
     </form>
   );
 }

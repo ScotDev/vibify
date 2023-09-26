@@ -1,6 +1,6 @@
-// "use client";
-
-// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import type { Database } from "@/supabase";
 
@@ -35,13 +35,17 @@ export default async function page({
   // Process seed here using switch statement
   // to determine which vibe (preset) to use
 
-  // const supabase = createClientComponentClient<Database>();
+  const supabase = createServerComponentClient<Database>({ cookies });
 
-  // const { data } = await supabase.auth.getSession();
-
-  // if (!data?.session) {
-  //   redirect("/login");
-  // }
+  const { data } = await supabase.auth.getSession();
+  if (!data?.session) {
+    return redirect("/login");
+  }
+  if (!cookies().has("providerRefreshToken")) {
+    return redirect(
+      `/callback?redirecter=step2&seed=${seed?.replace(/^"|"$/g, "")}`
+    );
+  }
 
   switch (seed) {
     case "running":
@@ -117,7 +121,7 @@ export default async function page({
 
   return (
     <>
-      <ConfigurationForm seed={seed} vibe={vibe}></ConfigurationForm>
+      <ConfigurationForm seed={seed} vibe={vibe} />
     </>
   );
 }

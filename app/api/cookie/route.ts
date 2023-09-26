@@ -12,18 +12,31 @@ export async function GET(req: NextRequest, res: NextResponse) {
   // );
 
   console.log("Cookie set successfully");
+  // const requestUrl = new URL(req.url);
+  // const cookieStore = cookies();
+  // const oneDay = 24 * 60 * 60 * 1000;
+  // cookieStore.set("test", "store", {
+  //   domain: requestUrl.origin,
+  //   secure: true,
+  //   // httpOnly: true,
+  //   maxAge: oneDay * 365,
+  // });
+
+  const oneDay = 24 * 60 * 60 * 1000;
+
   const requestUrl = new URL(req.url);
   const cookieStore = cookies();
-  const oneDay = 24 * 60 * 60 * 1000;
-  cookieStore.set("test", "store", {
+
+  cookieStore.set("test2", "get", {
     domain: requestUrl.origin,
     secure: true,
-    // httpOnly: true,
+    httpOnly: true,
     maxAge: oneDay * 365,
   });
+
   return new Response("Hello, Next.js!", {
     status: 200,
-    // headers: { "Set-Cookie": `test=3235t3`, test: "pengis" },
+    headers: { "Set-Cookie": `test=3235t3` },
   });
 }
 
@@ -32,12 +45,6 @@ export async function POST(req: Request, res: Response) {
   const { cookieName, cookieValue } = await req.json();
   console.log(cookieName, cookieValue);
   const oneDay = 24 * 60 * 60 * 1000;
-  // const options = {
-  //   secure: true,
-  //   httpOnly: true,
-  //   path: "/",
-  //   maxAge: oneDay * 365,
-  // };
 
   const requestUrl = new URL(req.url);
   const cookieStore = cookies();
@@ -53,6 +60,7 @@ export async function POST(req: Request, res: Response) {
 
   const response = new Response("test, Next.js!", {
     status: 200,
+    headers: { "Set-Cookie": `test=3235t3` },
   });
   // response.headers.set("Set-Cookie", "hello=post");
   return response;
