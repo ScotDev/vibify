@@ -1,7 +1,6 @@
 // Next imports
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 // Local component imports
 import SignOutButtonServer from "../components/SignOutButtonServer";
@@ -14,30 +13,24 @@ import { Loading, LoadingMediaItem } from "./Loading";
 import type { Database } from "@/supabase";
 
 // Third-party library imports
-import {
-  createClientComponentClient,
-  createServerComponentClient,
-} from "@supabase/auth-helpers-nextjs";
-
-// Server actions
-import { handleTokenRefresh } from "../actions/SpotifyToken";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default async function Profile_server() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data, error } = await supabase.auth.getSession();
 
   if (!data?.session) {
-    return redirect("/login?redirect_URL=profile");
+    redirect("/login?redirect_URL=profile");
   }
 
-  const token = await handleTokenRefresh();
-  // console.log(data, token);
+  // const token = await handleTokenRefresh();
+  const accessToken = cookies().get("providerAccessToken")?.value;
   //   If no access token found and no refresh token found, then sign out
-  if (!token || token.length < 1) {
-    console.log("No token,", token);
-    // await supabase.auth.signOut();
-    // console.log("signed out");c
-    redirect("/callback?redirect_URL=profile");
+  if (!accessToken) {
+    console.log("No token,", accessToken);
+
+    // redirect("/callback?redirect_URL=profile");
+    redirect("/token?redirect_URL=profile");
   }
 
   const getProfileData = async (access_token: string) => {
@@ -73,8 +66,8 @@ export default async function Profile_server() {
   };
 
   let loading = false;
-  const userData = await getProfileData(token);
-  const userTopItems = await getTopTracks(token);
+  const userData = await getProfileData(accessToken);
+  const userTopItems = await getTopTracks(accessToken);
 
   return (
     <div>

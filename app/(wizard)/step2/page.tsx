@@ -41,10 +41,17 @@ export default async function page({
   if (!data?.session) {
     return redirect("/login");
   }
+
+  const accessToken = cookies().get("providerAccessToken")?.value;
+
+  if (!accessToken) {
+    console.log("No access token");
+
+    redirect("/token?redirect_URL=step2");
+  }
+
   if (!cookies().has("providerRefreshToken")) {
-    return redirect(
-      `/callback?redirecter=step2&seed=${seed?.replace(/^"|"$/g, "")}`
-    );
+    return redirect("/callback?redirect_URL=step2");
   }
 
   switch (seed) {

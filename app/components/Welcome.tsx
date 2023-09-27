@@ -20,7 +20,7 @@ export default function Welcome() {
   const providerRefreshToken = params.get("providerRefreshToken");
   const providerAccessToken = params.get("providerAccessToken");
   const redirect_URL = params.get("redirect_URL");
-  const seed = params.get("seed");
+  // const seed = params.get("seed");
   const oneDay = 24 * 60 * 60 * 1000;
 
   useEffect(() => {
@@ -65,12 +65,11 @@ export default function Welcome() {
   }, []);
 
   if (providerRefreshToken && redirect_URL) {
-    if (seed) {
-      console.log("redirecting to: ", `/${redirect_URL}?seed=${seed}`);
-      router.push(`/${redirect_URL}?seed=${seed}`);
+    if (redirect_URL) {
+      console.log("redirecting to: ", `/${redirect_URL}`);
+      router.push(`/${redirect_URL}`);
     }
-
-    router.push("/" + redirect_URL);
+    router.push("/");
   }
 
   if (!providerRefreshToken) {
