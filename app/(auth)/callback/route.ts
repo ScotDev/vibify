@@ -16,8 +16,8 @@ export async function GET(request: NextRequest) {
   const provider_refresh_token = requestUrl.searchParams.get(
     "providerRefreshToken"
   );
-  const redirecter = requestUrl.searchParams.get("redirecter");
-  const seed = requestUrl.searchParams.get("seed");
+  const redirect_URL = requestUrl.searchParams.get("redirect_URL");
+  // const seed = requestUrl.searchParams.get("seed");
   const supabase = createRouteHandlerClient<Database>({ cookies });
   if (code) {
     await supabase.auth.exchangeCodeForSession(code);
@@ -29,21 +29,15 @@ export async function GET(request: NextRequest) {
   // console.log(token);
   if (data.session?.provider_token) {
     return NextResponse.redirect(
-      `${requestUrl.origin}/welcome?providerRefreshToken=${data?.session?.provider_refresh_token}&providerAccessToken=${data?.session?.provider_token}&redirect_URL=${redirecter}`
+      `${requestUrl.origin}/welcome?providerRefreshToken=${data?.session?.provider_refresh_token}&providerAccessToken=${data?.session?.provider_token}&redirect_URL=${redirect_URL}`
     );
   }
-  // if (seed) {
-  //   console.log("seed", seed);
-  //   return NextResponse.redirect(
-  //     `${requestUrl.origin}/welcome?providerRefreshToken=${provider_refresh_token}&providerAccessToken=${provider_token}&redirect_URL=${redirecter}&seed=${seed}`
-  //   );
-  // }
   if (!data.session) {
     return NextResponse.redirect(
-      `${requestUrl.origin}/login&redirect_URL=${redirecter}`
+      `${requestUrl.origin}/login&redirect_URL=${redirect_URL}`
     );
   }
   return NextResponse.redirect(
-    `${requestUrl.origin}/welcome?providerRefreshToken=${provider_refresh_token}&providerAccessToken=${provider_token}&redirect_URL=${redirecter}&seed=${seed}`
+    `${requestUrl.origin}/welcome?providerRefreshToken=${provider_refresh_token}&providerAccessToken=${provider_token}&redirect_URL=${redirect_URL}`
   );
 }

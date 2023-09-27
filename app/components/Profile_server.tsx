@@ -27,20 +27,8 @@ export default async function Profile_server() {
   const { data, error } = await supabase.auth.getSession();
 
   if (!data?.session) {
-    return redirect("/login?redirecter=profile");
+    return redirect("/login?redirect_URL=profile");
   }
-  // async function testAction() {
-  //   "use server";
-  //   const cookieStore = cookies();
-  //   const token = cookieStore.get("providerAccessToken");
-  //   console.log("user server", token);
-  //   cookieStore.set("test", token!.value, { path: "/" });
-  //   revalidatePath("/profile");
-  // }
-
-  // const cookieStore = cookies();
-  // const token = cookieStore.get("providerAccessToken");
-  // console.log("user server", token);
 
   const token = await handleTokenRefresh();
   // console.log(data, token);
@@ -49,7 +37,7 @@ export default async function Profile_server() {
     console.log("No token,", token);
     // await supabase.auth.signOut();
     // console.log("signed out");c
-    redirect("/callback?redirecter=profile");
+    redirect("/callback?redirect_URL=profile");
   }
 
   const getProfileData = async (access_token: string) => {
