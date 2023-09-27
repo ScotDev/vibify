@@ -50,10 +50,6 @@ export default async function page({
     redirect("/token?redirect_URL=step2");
   }
 
-  if (!cookies().has("providerRefreshToken")) {
-    return redirect("/callback?redirect_URL=step2");
-  }
-
   switch (seed) {
     case "running":
       vibe = {

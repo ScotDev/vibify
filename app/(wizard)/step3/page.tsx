@@ -54,7 +54,19 @@ export default async function page({
     return { data, error, status };
   };
 
-  const spotifyToken = await checkToken();
+  // const spotifyToken = await checkToken();
+
+  if (!data?.session) {
+    return redirect("/login");
+  }
+
+  const accessToken = cookies().get("providerAccessToken")?.value;
+
+  if (!accessToken) {
+    console.log("No access token");
+    // Missing state
+    return redirect("/token?redirect_URL=step3");
+  }
 
   const getSeedIDs = async (access_token: string) => {
     const options = {
@@ -120,11 +132,9 @@ export default async function page({
 
   // if (spotifyToken.error) return console.log(spotifyToken.error);
 
-  const recommendations = await getRecommendations(
-    spotifyToken.data.access_token as string
-  );
+  const recommendations = await getRecommendations(accessToken as string);
   const audioFeatures = await getAudioFeatures(
-    spotifyToken.data.access_token as string,
+    accessToken as string,
     recommendations?.tracks?.map((track: any) => track.id)
   );
   const totalDuration = recommendations?.tracks?.reduce(
@@ -146,11 +156,6 @@ export default async function page({
   const averageEnergy = Math.round(
     (totalEnergy / audioFeatures.audio_features.length) * 100
   );
-
-  if (!data.session || error || !spotifyToken.data.access_token) {
-    await supabase.auth.signOut();
-    redirect("/login");
-  }
 
   return (
     // <div className="lg:pr-48">

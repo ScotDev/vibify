@@ -70,73 +70,68 @@ export default async function Profile_server() {
   const userTopItems = await getTopTracks(accessToken);
 
   return (
-    <div>
-      Profile_server
-      <div className="flex flex-col pt-12 gap-6">
-        <h1>Profile</h1>
-        <div className="flex flex-col pt-6 gap-2 max-w-96 py-2">
-          <p className="text-xs">Display name</p>
-          {/* <h3>{data?.session?.user.user_metadata?.name}</h3> */}
-          {loading ? <Loading /> : <h3>{userData?.display_name}</h3>}
-        </div>
-        <div className="flex flex-col gap-2 max-w-96 py-2">
-          <p className="text-xs">Email address</p>
-          {/* <h4>{data?.session?.user.user_metadata?.email}</h4> */}
-          {loading ? <Loading /> : <h4>{userData?.email}</h4>}
-        </div>
+    <div className="flex flex-col pt-12 gap-6">
+      <h1>Profile</h1>
+      <div className="flex flex-col pt-6 gap-2 max-w-96 py-2">
+        <p className="text-xs">Display name</p>
+        {/* <h3>{data?.session?.user.user_metadata?.name}</h3> */}
+        {loading ? <Loading /> : <h3>{userData?.display_name}</h3>}
+      </div>
+      <div className="flex flex-col gap-2 max-w-96 py-2">
+        <p className="text-xs">Email address</p>
+        {/* <h4>{data?.session?.user.user_metadata?.email}</h4> */}
+        {loading ? <Loading /> : <h4>{userData?.email}</h4>}
+      </div>
 
-        <div className="flex flex-col gap-2 max-w-96 py-2">
-          <p className="text-xs">Profile URL</p>
-          <div className="flex gap-2">
-            {loading ? (
-              <Loading height="h-10" />
-            ) : (
-              <>
-                <Code href={userData?.external_urls?.spotify} loading={loading}>
-                  {userData?.external_urls?.spotify}
-                </Code>
-                <ClipboardButton
-                  title="Copy"
-                  value={userData?.external_urls?.spotify}
-                />
-              </>
-            )}
-          </div>
-        </div>
-        <div className="flex flex-col gap-2 max-w-96 py-2">
-          <p className="text-xs">Subscription type</p>
+      <div className="flex flex-col gap-2 max-w-96 py-2">
+        <p className="text-xs">Profile URL</p>
+        <div className="flex gap-2">
           {loading ? (
-            <Loading />
+            <Loading height="h-10" />
           ) : (
-            <p className="capitalize">{userData?.product}</p>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2 max-w-96 py-2">
-          <p className="text-xs">User country</p>
-          {loading ? (
-            <Loading />
-          ) : (
-            <p className="capitalize">{userData?.country}</p>
-          )}
-        </div>
-
-        <p className="text-xl pt-6">Top tracks last 4 weeks</p>
-
-        <div className="user-items-grid">
-          {loading && (
             <>
-              {Array.from(Array(6).keys()).map((_, index) => {
-                return <LoadingMediaItem key={index} />;
-              })}
+              <Code href={userData?.external_urls?.spotify} loading={loading}>
+                {userData?.external_urls?.spotify}
+              </Code>
+              <ClipboardButton
+                title="Copy"
+                value={userData?.external_urls?.spotify}
+              />
             </>
           )}
-          {userTopItems?.items?.map((item: any) => {
-            return <SmallMediaItem key={item.name} data={item} />;
-          })}
         </div>
+      </div>
+      <div className="flex flex-col gap-2 max-w-96 py-2">
+        <p className="text-xs">Subscription type</p>
+        {loading ? (
+          <Loading />
+        ) : (
+          <p className="capitalize">{userData?.product}</p>
+        )}
+      </div>
 
-        <SignOutButtonServer />
+      <div className="flex flex-col gap-2 max-w-96 py-2">
+        <p className="text-xs">User country</p>
+        {loading ? (
+          <Loading />
+        ) : (
+          <p className="capitalize">{userData?.country}</p>
+        )}
+      </div>
+
+      <p className="text-xl pt-6">Top tracks last 4 weeks</p>
+
+      <div className="user-items-grid">
+        {loading && (
+          <>
+            {Array.from(Array(6).keys()).map((_, index) => {
+              return <LoadingMediaItem key={index} />;
+            })}
+          </>
+        )}
+        {userTopItems?.items?.map((item: any) => {
+          return <SmallMediaItem key={item.name} data={item} />;
+        })}
       </div>
     </div>
   );
