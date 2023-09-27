@@ -18,7 +18,6 @@ export async function GET(request: NextRequest) {
   );
   const redirecter = requestUrl.searchParams.get("redirecter");
   const seed = requestUrl.searchParams.get("seed");
-  console.log("callback", seed);
   const supabase = createRouteHandlerClient<Database>({ cookies });
   if (code) {
     await supabase.auth.exchangeCodeForSession(code);

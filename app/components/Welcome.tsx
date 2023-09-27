@@ -21,7 +21,6 @@ export default function Welcome() {
   const providerAccessToken = params.get("providerAccessToken");
   const redirect_URL = params.get("redirect_URL");
   const seed = params.get("seed");
-  console.log(redirect_URL, seed);
   const oneDay = 24 * 60 * 60 * 1000;
 
   useEffect(() => {
@@ -70,7 +69,6 @@ export default function Welcome() {
       console.log("redirecting to: ", `/${redirect_URL}?seed=${seed}`);
       router.push(`/${redirect_URL}?seed=${seed}`);
     }
-    console.log("welcome", redirect_URL);
 
     router.push("/" + redirect_URL);
   }
