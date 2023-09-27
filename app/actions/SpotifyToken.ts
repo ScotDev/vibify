@@ -27,7 +27,7 @@ async function handleTokenRefresh() {
       process.env.NEXT_PUBLIC_SPOTIFY_CLIENTSECRET
   ).toString("base64");
 
-  if (!data.session || error) return console.log(error);
+  if (!data.session || error) return null;
 
   if (!spotifyAccessToken || spotifyAccessToken.length < 1) {
     // Use refresh token to get new access token
@@ -52,17 +52,6 @@ async function handleTokenRefresh() {
       );
       const newSpotifyToken = await newAccessToken.json();
       console.log("New access token returned from spotify", newSpotifyToken);
-
-      // const testToken = await fetch(
-      //   `${process.env.NEXT_PUBLIC_API_URL}/api/refresh`,
-      //   {
-      //     method: "POST",
-      //     body: JSON.stringify({ refreshToken: spotifyRefreshToken }),
-      //   }
-      // );
-      // console.log(`${process.env.NEXT_PUBLIC_API_URL}/api/refresh`);
-      // const data = await testToken.json();
-      // console.log("API", data, testToken.headers);
 
       return newSpotifyToken.access_token;
     }

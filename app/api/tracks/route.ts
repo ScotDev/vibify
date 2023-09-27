@@ -3,8 +3,6 @@ import type { NextRequest } from "next/server";
 
 import { cookies } from "next/headers";
 
-// import { checkToken } from "@/app/utils/token";
-
 const checkToken = async () => {
   const cookieStore = cookies();
   console.log(cookieStore.getAll());
@@ -47,8 +45,6 @@ export async function GET(request: NextRequest) {
   if (error || status === 400) {
     return console.log("route.ts 50", data, error, "status:", status);
   }
-
-  // if (!data.access_token) then
 
   const result = await searchTracks(
     data.access_token as string,
