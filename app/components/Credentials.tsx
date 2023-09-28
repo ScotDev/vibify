@@ -48,13 +48,11 @@ export default function Credentials() {
 
   if (redirect_URL) {
     if (preset) {
-      router.replace(`/${redirect_URL}?seed=${preset}`);
+      return router.replace(`/${redirect_URL}?seed=${preset}`);
     } else {
-      router.replace(`/${redirect_URL}`);
+      return router.replace(`/${redirect_URL}`);
     }
   } else {
-    router.replace(`/`);
+    return router.replace(`/`);
   }
-
-  return <div>Credentials</div>;
 }

@@ -64,16 +64,16 @@ export default function Welcome() {
     setCookies();
   }, []);
 
-  if (providerRefreshToken) {
-    if (redirect_URL) {
-      return router.replace(`/${redirect_URL}`);
-    }
-    router.replace("/");
-  }
+  // if (providerRefreshToken) {
+  //   if (redirect_URL) {
+  //     return router.replace(`/${redirect_URL}`);
+  //   }
+  //   return router.replace("/");
+  // }
 
-  if (!providerRefreshToken) {
-    router.replace(`/login`);
-  }
+  // if (!providerRefreshToken) {
+  //   return router.replace(`/login`);
+  // }
 
   return (
     <div className="flex flex-col pt-12 gap-6">
