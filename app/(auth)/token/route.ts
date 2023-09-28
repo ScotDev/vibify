@@ -69,12 +69,14 @@ export async function GET(request: NextRequest) {
   // If refresh token is usable, contact spotify api to get new access token
   const res = await fetch("https://accounts.spotify.com/api/token", options);
 
-  //   This should maybe just be a redirect to /login
+  // if (!res.ok) {
+  //   return NextResponse.json(
+  //     { data: null, error: "Received a non-200 response from Spotify" },
+  //     { status: 400 }
+  //   );
+  // }
   if (!res.ok) {
-    return NextResponse.json(
-      { data: null, error: "Received a non-200 response from Spotify" },
-      { status: 400 }
-    );
+    return NextResponse.redirect(`${requestUrl.origin}/login`);
   }
 
   const newSpotifyAccessToken = await res.json();

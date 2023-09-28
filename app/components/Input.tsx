@@ -250,7 +250,6 @@ const SpotifySearchInput = ({
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
-      // Add checktoken from token.ts
       if (searchTerm.trim().length < 1) return setResults([]);
       const res = await fetch(`${endpoint}?term=${searchTerm.trim()}`);
       if (res.status !== 200) {
