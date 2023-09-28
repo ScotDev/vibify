@@ -1,11 +1,12 @@
-// "use client";
+"use client";
 
 import Credentials from "@/app/components/Credentials";
 
 export default function page() {
   return (
-    <div>
+    <>
+      {/* @ts-expect-error Server Component */}
       <Credentials />
-    </div>
+    </>
   );
 }
