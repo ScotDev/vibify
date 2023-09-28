@@ -69,6 +69,7 @@ type SliderInputProps = {
   min: number;
   max: number;
   step?: number;
+  hasGrade?: boolean;
 };
 
 const SliderInput: React.FC<SliderInputProps> = ({
@@ -78,6 +79,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
   min,
   max,
   step,
+  hasGrade,
 }) => {
   // const [grade, setGrade] = useState("Average");
 
@@ -85,7 +87,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
     value < max / 3
       ? "Low"
       : value < max / 2
-      ? "Normal"
+      ? "Average"
       : value < max - max / 3
       ? "High"
       : "Very High";
@@ -102,9 +104,11 @@ const SliderInput: React.FC<SliderInputProps> = ({
         className="accent-fuchsia-600 w-full"
         onChange={onChange}
       />
-      <p>
-        {value} ({grade})
-      </p>
+      {hasGrade && (
+        <p>
+          {value} ({grade})
+        </p>
+      )}
     </div>
   );
 };

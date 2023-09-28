@@ -47,7 +47,7 @@ export default async function page({
   if (!accessToken) {
     console.log("No access token");
 
-    redirect("/token?redirect_URL=step2");
+    redirect(`/token?redirect_URL=step2&preset=${seed}`);
   }
 
   switch (seed) {

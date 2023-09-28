@@ -35,9 +35,8 @@ import {
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const redirect_URL = requestUrl.searchParams.get("redirect_URL");
-  console.log("redirect_URL", redirect_URL);
+  const preset = requestUrl.searchParams.get("preset");
   const spotifyRefreshToken = cookies().get("providerRefreshToken");
-  console.log("spotifyRefreshToken", spotifyRefreshToken);
 
   if (!spotifyRefreshToken) {
     // 401 unauthorised
@@ -66,15 +65,9 @@ export async function GET(request: NextRequest) {
     json: true,
   };
 
-  // If refresh token is usable, contact spotify api to get new access token
+  // If refresh token is present, contact spotify api to get new access token
   const res = await fetch("https://accounts.spotify.com/api/token", options);
 
-  // if (!res.ok) {
-  //   return NextResponse.json(
-  //     { data: null, error: "Received a non-200 response from Spotify" },
-  //     { status: 400 }
-  //   );
-  // }
   if (!res.ok) {
     return NextResponse.redirect(`${requestUrl.origin}/login`);
   }
@@ -85,12 +78,15 @@ export async function GET(request: NextRequest) {
 
   // If all is successful, redirect to the credentials page to allow the cookies to be set
   // Then redirect back to the original page
+
+  // If a preset is passed in, i.e. if redirect comes from step2, redirect to the preset page
+  if (preset) {
+    return NextResponse.redirect(
+      `${requestUrl.origin}/credentials?redirect_URL=${redirect_URL}&providerAccessToken=${newSpotifyAccessToken.access_token}&preset=${preset}`
+    );
+  }
+
   return NextResponse.redirect(
     `${requestUrl.origin}/credentials?redirect_URL=${redirect_URL}&providerAccessToken=${newSpotifyAccessToken.access_token}`
   );
-
-  //   return NextResponse.json(
-  //     { data: newSpotifyAccessToken, error: null },
-  //     { status: 200 }
-  //   );
 }

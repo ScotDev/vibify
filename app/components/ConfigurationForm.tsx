@@ -133,6 +133,7 @@ export default function ConfigurationForm({
             min={30}
             max={200}
             step={5}
+            hasGrade
           />
           <SliderInput
             title="Number of tracks"
@@ -148,6 +149,7 @@ export default function ConfigurationForm({
             min={0}
             max={100}
             step={10}
+            hasGrade
           />
         </div>
       </div>
