@@ -38,9 +38,12 @@ export async function GET(request: NextRequest) {
   const preset = requestUrl.searchParams.get("preset");
   const spotifyRefreshToken = cookies().get("providerRefreshToken");
 
+  console.log("requestUrl", requestUrl);
+
   if (!spotifyRefreshToken) {
     // 401 unauthorised
     // Can't dictate status and redirect?
+    console.log("token route: no refresh token found");
     return NextResponse.redirect(`${requestUrl.origin}/login`);
   }
 

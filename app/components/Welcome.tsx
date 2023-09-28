@@ -26,7 +26,7 @@ export default function Welcome() {
   useEffect(() => {
     const setCookies = async () => {
       const { data, error } = await supabase.auth.getSession();
-      if (document && data.session && !error) {
+      if (typeof document !== undefined && data.session && !error) {
         // TO-DO: check if cookie exists before setting, avoiding overwriting
         // if not needed and expiration timing errors
         // Should I check if the user has an active supabase session?
@@ -64,16 +64,15 @@ export default function Welcome() {
     setCookies();
   }, []);
 
-  if (providerRefreshToken && redirect_URL) {
+  if (providerRefreshToken) {
     if (redirect_URL) {
-      console.log("redirecting to: ", `/${redirect_URL}`);
-      router.push(`/${redirect_URL}`);
+      return router.replace(`/${redirect_URL}`);
     }
-    router.push("/");
+    router.replace("/");
   }
 
   if (!providerRefreshToken) {
-    router.push(`/login`);
+    router.replace(`/login`);
   }
 
   return (

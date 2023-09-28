@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { setCookie } from "cookies-next";
 // Next imports
 import { useSearchParams, useRouter } from "next/navigation";
@@ -16,26 +18,33 @@ export default function Credentials() {
   const oneHour = new Date(date.setSeconds(3600));
   console.log("Creds", redirect_URL, providerAccessToken);
 
-  if (providerAccessToken) {
-    try {
-      if (typeof sessionStorage !== "undefined" && preset) {
-        const appState = {
-          // I need to store seed/preset for step2, start with that
-          preset,
-        };
-        sessionStorage.setItem("appState", JSON.stringify(appState));
+  useEffect(() => {
+    if (providerAccessToken) {
+      try {
+        if (typeof sessionStorage === undefined) {
+          throw new Error("No sessionstorage");
+        }
+        if (typeof sessionStorage !== undefined && preset) {
+          const appState = {
+            // I need to store seed/preset for step2, start with that
+            preset,
+          };
+          sessionStorage.setItem("appState", JSON.stringify(appState));
+        }
+        if (typeof window == undefined) {
+          throw new Error("No window");
+        }
+        setCookie("providerAccessToken", providerAccessToken, {
+          maxAge: 3600,
+          expires: oneHour,
+          secure: true,
+        });
+      } catch (error) {
+        console.log(error);
+        return router.replace(`/`);
       }
-
-      setCookie("providerAccessToken", providerAccessToken, {
-        maxAge: 3600,
-        expires: oneHour,
-        secure: true,
-      });
-    } catch (error) {
-      console.log(error);
-      router.push(`/`);
     }
-  }
+  }, []);
 
   if (redirect_URL) {
     if (preset) {

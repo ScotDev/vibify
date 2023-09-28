@@ -3,7 +3,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 // Local component imports
-import SignOutButtonServer from "../components/SignOutButtonServer";
 import Code from "../components/Code";
 import SmallMediaItem from "../components/SmallMediaItem";
 import ClipboardButton from "../components/ClipboardButton";
@@ -19,7 +18,8 @@ export default async function Profile_server() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data, error } = await supabase.auth.getSession();
 
-  if (!data?.session) {
+  if (!data?.session || error) {
+    console.log("No session,", data?.session, error);
     redirect("/login?redirect_URL=profile");
   }
 
