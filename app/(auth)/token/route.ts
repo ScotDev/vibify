@@ -24,11 +24,14 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+
 // Types
 import {
   SpotifyTokenRequestData,
   SpotifyTokenRequestOptions,
 } from "@/types/customTypes";
+import { Database } from "@/supabase";
 
 // export const dynamic = "force-dynamic";
 
@@ -38,12 +41,15 @@ export async function GET(request: NextRequest) {
   const preset = requestUrl.searchParams.get("preset");
   const spotifyRefreshToken = cookies().get("providerRefreshToken");
 
+  const supabase = createRouteHandlerClient<Database>({ cookies });
+
   console.log("requestUrl", requestUrl);
 
   if (!spotifyRefreshToken) {
     // 401 unauthorised
     // Can't dictate status and redirect?
     console.log("token route: no refresh token found");
+    await supabase.auth.signOut();
     return NextResponse.redirect(`${requestUrl.origin}/login`);
   }
 

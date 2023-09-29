@@ -33,15 +33,18 @@ export default async function RootLayout({
         <Navbar data={data} />
         <main className="flex min-h-screen flex-col justify-between xs:px-4 sm:px-12 md:px-24">
           {children}
-          <div className="pt-24 pb-6 flex gap-2 items-center">
-            <p className="text-xs">Made with data from</p>
-            <Image
-              height={72}
-              width={72}
-              placeholder="blur"
-              src={spotify_logo}
-              alt="Spotify Logo"
-            />
+          <div className="flex justify-between items-center">
+            <div className="pt-24 pb-6 flex gap-2 items-center">
+              <p className="text-xs">Made with data from</p>
+              <Image
+                height={72}
+                width={72}
+                placeholder="blur"
+                src={spotify_logo}
+                alt="Spotify Logo"
+              />
+            </div>
+            <p className="text-xs text-neutral-400 pl-4">Beta build</p>
           </div>
         </main>
         {/* <Analytics /> */}

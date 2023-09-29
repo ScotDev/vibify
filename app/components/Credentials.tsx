@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import { setCookie } from "cookies-next";
+
 // Next imports
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -21,10 +22,10 @@ export default function Credentials() {
   useEffect(() => {
     if (providerAccessToken) {
       try {
-        if (typeof sessionStorage === undefined) {
+        if (typeof sessionStorage === "undefined") {
           throw new Error("No sessionstorage");
         }
-        if (typeof sessionStorage !== undefined && preset) {
+        if (typeof sessionStorage !== "undefined" && preset) {
           const appState = {
             // I need to store seed/preset for step2, start with that
             preset,
@@ -44,15 +45,14 @@ export default function Credentials() {
         return router.replace(`/`);
       }
     }
-  }, []);
-
-  if (redirect_URL) {
-    if (preset) {
-      return router.replace(`/${redirect_URL}?seed=${preset}`);
+    if (redirect_URL) {
+      if (preset) {
+        return router.replace(`/${redirect_URL}?seed=${preset}`);
+      } else {
+        return router.replace(`/${redirect_URL}`);
+      }
     } else {
-      return router.replace(`/${redirect_URL}`);
+      return router.replace(`/`);
     }
-  } else {
-    return router.replace(`/`);
-  }
+  }, []);
 }
